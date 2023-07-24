@@ -9,7 +9,19 @@ protocol FinanceHomePresentableListener: AnyObject {
 
 final class FinanceHomeViewController: UIViewController, FinanceHomePresentable, FinanceHomeViewControllable {
   
+  //StackView 존재, StackView 안에 들어갈 View들을 자식 리불렛으로부터
+  
   weak var listener: FinanceHomePresentableListener?
+  
+  private let stackView: UIStackView = {
+    let stackView = UIStackView()
+    stackView.translatesAutoresizingMaskIntoConstraints = false
+    stackView.axis = .vertical
+    stackView.alignment = .fill
+    stackView.distribution = .equalSpacing
+    stackView.spacing = 4
+    return stackView
+  }()
   
   init() {
     super.init(nibName: nil, bundle: nil)
@@ -23,21 +35,18 @@ final class FinanceHomeViewController: UIViewController, FinanceHomePresentable,
     setupViews()
   }
   
-  private let label: UILabel = {
-    let label = UILabel()
-    label.translatesAutoresizingMaskIntoConstraints = false
-    return label
-  }()
-  
   func setupViews() {
     title = "슈퍼페이"
     tabBarItem = UITabBarItem(title: "슈퍼페이", image: UIImage(systemName: "creditcard"), selectedImage: UIImage(systemName: "creditcard.fill"))
-    label.text = "Finance Home"
-    view.backgroundColor = .systemBlue
-    view.addSubview(label)
+    view.backgroundColor = .white
+    view.addSubview(stackView)
     NSLayoutConstraint.activate([
-      label.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-      label.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+      stackView.topAnchor.constraint(equalTo: view.topAnchor),
+      stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+      stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+      //stackView에 View를 붙이려면 자식 리불렛이 필요하다 (라우터의 역할)
+      //자식 리불렛을 생성하려면 해당 빌더가 필요하다 (빌더의 역할)
+      //
     ])
   }
 }
