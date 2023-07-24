@@ -8,9 +8,19 @@ protocol FinanceHomeDependency: Dependency {
 //컴포넌트가 (자식에게 필요로한 정보) SuperPayDashboard를 confirm 하도록 채택
 //컴포넌트 : 리불렛이 필요로 하는 정보들을 담는 객체 (자식 리불렛이 필요로 하는 것들 포함)
 //자식들의 디펜던시를 부모 컴포넌트가 confirm 하도록 함
+//🍯 타입 캐스팅을 통한 자식 리블렛 데이터 접근 제한 
 final class FinanceHomeComponent: Component<FinanceHomeDependency>, SuperPayDashboardDependency {
+  var balance: ReadOnlyCurrentValuePublisher<Double> { balancePublisher } //자식에게는 ReadOnly
+  private var balancePublisher: CurrentValuePublisher<Double>
   
-  // TODO: Declare 'fileprivate' dependencies that are only used by this RIB.
+  init(
+    dependency: FinanceHomeDependency,
+    balance: CurrentValuePublisher<Double> //생성자에서 받아오고
+  ) {
+    self.balancePublisher = balance
+    super.init(dependency: dependency)
+    
+  }
 }
 
 // MARK: - Builder
@@ -28,7 +38,14 @@ final class FinanceHomeBuilder: Builder<FinanceHomeDependency>, FinanceHomeBuild
   }
   
   func build(withListener listener: FinanceHomeListener) -> FinanceHomeRouting {
-    let component = FinanceHomeComponent(dependency: dependency)
+    //Finance는 금융 관련 기능의 첫 시작이므로 여기서 balance(잔여 금액) 시작하는 게 좋아 보임
+    let balancePublisher = CurrentValuePublisher<Double>(0)
+    
+    let component = FinanceHomeComponent(
+      dependency: dependency,
+      balance: balancePublisher
+    )
+    
     let viewController = FinanceHomeViewController()
     let interactor = FinanceHomeInteractor(presenter: viewController)
     interactor.listener = listener

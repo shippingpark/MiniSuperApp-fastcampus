@@ -20,7 +20,7 @@ public class ReadOnlyCurrentValuePublisher<Element>: Publisher {
   public typealias Output = Element
   public typealias Failure = Never
   
-  //현재 잔액 값을 받아갈 수 있는 value property 
+  //현재 잔액 값을 받아갈 수 있는 value property
   public var value: Element {
     currentValueRelay.value
   }

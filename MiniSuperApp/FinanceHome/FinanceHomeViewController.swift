@@ -9,11 +9,9 @@ protocol FinanceHomePresentableListener: AnyObject {
 
 final class FinanceHomeViewController: UIViewController, FinanceHomePresentable, FinanceHomeViewControllable {
   
-  
-  //StackView 존재, StackView 안에 들어갈 View들을 자식 리불렛으로부터
-  
   weak var listener: FinanceHomePresentableListener?
   
+  //StackView 안에 들어갈 View들을 자식 리불렛으로부터 받음
   private let stackView: UIStackView = {
     let stackView = UIStackView()
     stackView.translatesAutoresizingMaskIntoConstraints = false

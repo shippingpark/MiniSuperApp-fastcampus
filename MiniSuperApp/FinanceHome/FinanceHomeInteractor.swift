@@ -3,13 +3,10 @@ import ModernRIBs
 protocol FinanceHomeRouting: ViewableRouting {
   func attachSuperPayDashboard() //Router를 이용한 자식 리블렛 연결 2️⃣ : Routing 프로토콜 내 메서드 구현
   //Interactor는 라우팅 이라는 프로토콜로 라우터에 접근한다
-  
-  // TODO: Declare methods the interactor can invoke to manage sub-tree via the router.
 }
 
 protocol FinanceHomePresentable: Presentable {
   var listener: FinanceHomePresentableListener? { get set }
-  // TODO: Declare methods the interactor can invoke the presenter to present data.
 }
 
 protocol FinanceHomeListener: AnyObject {
@@ -21,8 +18,6 @@ final class FinanceHomeInteractor: PresentableInteractor<FinanceHomePresentable>
   weak var router: FinanceHomeRouting?
   weak var listener: FinanceHomeListener?
   
-  // TODO: Add additional dependencies to constructor. Do not perform any logic
-  // in constructor.
   override init(presenter: FinanceHomePresentable) {
     super.init(presenter: presenter)
     presenter.listener = self
@@ -34,12 +29,9 @@ final class FinanceHomeInteractor: PresentableInteractor<FinanceHomePresentable>
     super.didBecomeActive()
     //Router를 이용한 자식 리블렛 연결 1️⃣: outer는 FinanceHomeRouting이라는 프로토콜로 구성되어 있으므로 원하는 이동이 있을 시 해당 프토콜에 메서드를 선언해 줘야 한다
     router?.attachSuperPayDashboard()
-    
-    // TODO: Implement business logic here.
   }
   
   override func willResignActive() {
     super.willResignActive()
-    // TODO: Pause any business logic.
   }
 }

@@ -124,9 +124,43 @@ final class SuperPayDashboardViewController: UIViewController, SuperPayDashboard
     ])
   }
   
+  func updateBalance(_ balance: String) {
+    balanceAmountLabel.text = balance
+  }
+  
   
   @objc
   private func topupButtonDidTap() {
     
   }
 }
+
+
+
+// MARK: - 변동이 있는 데이터, 여러 곳에서 쓰일 수 있는 데이터는
+// ⭐️Stream으로 관리하는 것이 좋다⭐️
+// Combine 사용
+// Subject, Publisher, Operator 종류가 적어 가벼운 라이브러리 하나를 추가적으로 쓸 것
+// Combine Ext 라이브러리
+
+// MARK: - 변동이 있는 데이터 전달 과정 정리
+//✏️ 데이터 전달 받고자 하는 리블렛 : SuperPayDashboard / ✏️ 데이터 생성 및 전달해줄 리블렛 : FinanceHome
+//📝 부모 리블렛이 자식 리블렛에게 데이터를 readOnlyPublisher로 전달해주게 만들자
+//1️⃣ FinanceHomeBuilder가 자식의 component를 생산할 책임이 있으므로
+// - FinanceHomeComponent에 balance 추가
+// 🍯 Tip : 값을 생성할 수 있는 객체와 없는 객체를 분리하는 방법
+// - ReadOnlyCurrentValuePublisher / CurrentValuePublisher 사용하여 send 이벤트 전달 가능 객체와 불가능 객체 구분
+// ReadOnlyCurrentValuePublisher는 balance, CurrentValuePublisher 는 private 으로 선언
+// ReadOnlyCurrentValuePublisher는
+// 값을 전달받는 자식 리블렛이 { balancePublisher } 으로 getter 만 구현!
+// 더불어 부모 객체에 해당하는 ReadOnlyCurrentValuePublisher이 타입 캐스팅 되어 send 메서드에는 접근 불가
+// 🤔 부모로부터 받은 component : dependency
+//2️⃣ dependency를 주입받을 SuperPayDashboardBuilder는 dependency 프로토콜에 전달 받기를 원하는 값 balance를 추가
+//3️⃣ build 메서드 내에서 component 생성 및 필요한 생성자들 담을 때, Interactor가 dependency 가져감
+//4️⃣ 받은 dependency에서 원하는 값인 balance 꺼내서 didBecomeActive할 때 사용
+//5️⃣ presenter (ViewController) 에게 전달해줄 데이터 SuperPayDashboardPresentable 메서드로 정의 
+//6️⃣ 정의된 메서드 생성하여 데이터 값 전달받아 수행할 일 적용 (UI Update)
+
+
+
+
