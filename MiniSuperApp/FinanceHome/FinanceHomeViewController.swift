@@ -41,6 +41,7 @@ final class FinanceHomeViewController: UIViewController, FinanceHomePresentable,
     tabBarItem = UITabBarItem(title: "슈퍼페이", image: UIImage(systemName: "creditcard"), selectedImage: UIImage(systemName: "creditcard.fill"))
     view.backgroundColor = .white
     view.addSubview(stackView)
+    
     NSLayoutConstraint.activate([
       stackView.topAnchor.constraint(equalTo: view.topAnchor),
       stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -54,6 +55,7 @@ final class FinanceHomeViewController: UIViewController, FinanceHomePresentable,
   //Router를 이용한 자식 리블렛 연결 5️⃣: FinanceHomeViewControllable 델리게이트 통해 전달 받은 뷰컨을 화면 위에 올림
   func addDashboard(_ view: ViewControllable) {
     let vc = view.uiviewController
+    
     addChild(vc)//ChildViewController로 추가
     stackView.addArrangedSubview(vc.view) //stackView에 뷰컨.뷰 추가
     vc.didMove(toParent: self) //⭐️(몰랐던 정보) 뷰컨트롤러 라이프 사이클을 유지하기 위함
