@@ -29,10 +29,13 @@ final class AppRootBuilder: Builder<AppRootDependency>, AppRootBuildable {
     let tabBar = RootTabBarController()
     
     let interactor = AppRootInteractor(presenter: tabBar)
-    
+  
+    //자기(부모)가 필요한 세 개의 리불렛을 만들기 위해서 빌더를 만든다
     let appHome = AppHomeBuilder(dependency: component)
     let financeHome = FinanceHomeBuilder(dependency: component)
     let profileHome = ProfileHomeBuilder(dependency: component)
+    
+    //그걸 붙이는 건 라우터가 한다
     let router = AppRootRouter(
       interactor: interactor,
       viewController: tabBar,

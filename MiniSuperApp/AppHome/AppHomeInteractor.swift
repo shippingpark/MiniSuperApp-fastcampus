@@ -11,7 +11,7 @@ protocol AppHomePresentable: Presentable {
   func updateWidget(_ viewModels: [HomeWidgetViewModel])
 }
 
-public protocol AppHomeListener: AnyObject {
+public protocol AppHomeListener: AnyObject { //앱 홈 리블렛이 부모 리블렛에게 이벤트를 전달할 때 쓰임 (단순한 델리게이트 패턴)
   // TODO: Declare methods the interactor can invoke to communicate with other RIBs.
 }
 
@@ -49,5 +49,4 @@ final class AppHomeInteractor: PresentableInteractor<AppHomePresentable>, AppHom
   func transportHomeDidTapClose() {
     router?.detachTransportHome()
   }
-  
 }
