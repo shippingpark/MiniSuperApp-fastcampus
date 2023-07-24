@@ -26,7 +26,7 @@ final class AppRootInteractor: PresentableInteractor<AppRootPresentable>, AppRoo
     presenter.listener = self
   }
   
-  override func didBecomeActive() {
+  override func didBecomeActive() { //MVC에서는 ViewDidLoad와 같은 역할, 부모에게 붙어서 활성화 될 때 호출됨
     super.didBecomeActive()
     
     router?.attachTabs()

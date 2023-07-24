@@ -17,7 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     let result = AppRootBuilder(dependency: AppComponent()).build()
     self.launchRouter = result.launchRouter
     self.urlHandler = result.urlHandler
-    launchRouter?.launch(from: window)
+    launchRouter?.launch(from: window)//앱의 첫 리블렛에만 사용 (부모 리블렛이 없으므로 어테치할 게 없어서)
     
     return true
   }

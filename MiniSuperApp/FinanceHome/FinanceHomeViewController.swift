@@ -9,6 +9,7 @@ protocol FinanceHomePresentableListener: AnyObject {
 
 final class FinanceHomeViewController: UIViewController, FinanceHomePresentable, FinanceHomeViewControllable {
   
+  
   //StackView 존재, StackView 안에 들어갈 View들을 자식 리불렛으로부터
   
   weak var listener: FinanceHomePresentableListener?
@@ -48,5 +49,14 @@ final class FinanceHomeViewController: UIViewController, FinanceHomePresentable,
       //자식 리불렛을 생성하려면 해당 빌더가 필요하다 (빌더의 역할)
       //
     ])
+  }
+  
+  //Router를 이용한 자식 리블렛 연결 5️⃣: FinanceHomeViewControllable 델리게이트 통해 전달 받은 뷰컨을 화면 위에 올림
+  func addDashboard(_ view: ViewControllable) {
+    let vc = view.uiviewController
+    addChild(vc)//ChildViewController로 추가
+    stackView.addArrangedSubview(vc.view) //stackView에 뷰컨.뷰 추가
+    vc.didMove(toParent: self) //⭐️(몰랐던 정보) 뷰컨트롤러 라이프 사이클을 유지하기 위함
+    //Router에서 이제 attachChild 할 준비 완료
   }
 }
