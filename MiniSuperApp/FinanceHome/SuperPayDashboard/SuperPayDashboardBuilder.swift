@@ -6,6 +6,7 @@
 //
 
 import ModernRIBs
+import Foundation
 
 //부모로 부터 받고 싶은 것은 여기에 선언
 protocol SuperPayDashboardDependency: Dependency {
@@ -16,6 +17,7 @@ protocol SuperPayDashboardDependency: Dependency {
 final class SuperPayDashboardComponent: Component<SuperPayDashboardDependency>, SuperPayDashboardInteractorDependency {
   //SuperPayDashboardInteractorDependency 필수 구현자
   var balance: ReadOnlyCurrentValuePublisher<Double> { dependency.balance } //부모로 부터 받아온 디펜던시를 연결해 주는 역할만 수행
+  var balanceFormatter: NumberFormatter { Formatter.balanceFormatter }
 }
 
 // MARK: - Builder

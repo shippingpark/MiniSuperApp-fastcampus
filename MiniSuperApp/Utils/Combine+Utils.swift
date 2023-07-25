@@ -36,7 +36,6 @@ public class ReadOnlyCurrentValuePublisher<Element>: Publisher {
   }
 }
 
-
 //값을 전송할 수 있는 Publisher
 //잔액을 관리하는 객체가 생성할 Publisher
 public final class CurrentValuePublisher<Element>: ReadOnlyCurrentValuePublisher<Element> {

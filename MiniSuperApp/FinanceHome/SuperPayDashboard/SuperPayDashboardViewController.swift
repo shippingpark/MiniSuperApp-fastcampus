@@ -160,7 +160,3 @@ final class SuperPayDashboardViewController: UIViewController, SuperPayDashboard
 //4️⃣ 받은 dependency에서 원하는 값인 balance 꺼내서 didBecomeActive할 때 사용
 //5️⃣ presenter (ViewController) 에게 전달해줄 데이터 SuperPayDashboardPresentable 메서드로 정의 
 //6️⃣ 정의된 메서드 생성하여 데이터 값 전달받아 수행할 일 적용 (UI Update)
-
-
-
-

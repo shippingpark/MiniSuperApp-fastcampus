@@ -39,7 +39,7 @@ final class FinanceHomeBuilder: Builder<FinanceHomeDependency>, FinanceHomeBuild
   
   func build(withListener listener: FinanceHomeListener) -> FinanceHomeRouting {
     //Finance는 금융 관련 기능의 첫 시작이므로 여기서 balance(잔여 금액) 시작하는 게 좋아 보임
-    let balancePublisher = CurrentValuePublisher<Double>(0)
+    let balancePublisher = CurrentValuePublisher<Double>(10000)
     
     let component = FinanceHomeComponent(
       dependency: dependency,
@@ -52,6 +52,7 @@ final class FinanceHomeBuilder: Builder<FinanceHomeDependency>, FinanceHomeBuild
     
     //superPayDashboardBuilder를 생성하기 위해서는, 해당 리불렛이 동작하기 위해 필요로 하는 객체들을 주입해 준다
     let superPayDashboardBuilder = SuperPayDashboardBuilder(dependency: component)
+    
     
     //필요로 하는 정보를 다 생성했다면 (Builder의 역할)
     //해당 정보를 Router로 넘겨준다
