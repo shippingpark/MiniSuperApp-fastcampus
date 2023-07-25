@@ -9,15 +9,18 @@ protocol FinanceHomeDependency: Dependency {
 //컴포넌트 : 리불렛이 필요로 하는 정보들을 담는 객체 (자식 리불렛이 필요로 하는 것들 포함)
 //자식들의 디펜던시를 부모 컴포넌트가 confirm 하도록 함
 //🍯 타입 캐스팅을 통한 자식 리블렛 데이터 접근 제한 
-final class FinanceHomeComponent: Component<FinanceHomeDependency>, SuperPayDashboardDependency {
+final class FinanceHomeComponent: Component<FinanceHomeDependency>, SuperPayDashboardDependency, CardOnFileDashboardDependency {
+  var cardsOnFileRepository: CardOnFileRepository
   var balance: ReadOnlyCurrentValuePublisher<Double> { balancePublisher } //자식에게는 ReadOnly
   private var balancePublisher: CurrentValuePublisher<Double>
   
   init(
     dependency: FinanceHomeDependency,
-    balance: CurrentValuePublisher<Double> //생성자에서 받아오고
+    balance: CurrentValuePublisher<Double>, //생성자에서 받아오고
+    CardOnFileRepository: CardOnFileRepository
   ) {
     self.balancePublisher = balance
+    self.cardsOnFileRepository = CardOnFileRepository
     super.init(dependency: dependency)
     
   }
@@ -43,23 +46,25 @@ final class FinanceHomeBuilder: Builder<FinanceHomeDependency>, FinanceHomeBuild
     
     let component = FinanceHomeComponent(
       dependency: dependency,
-      balance: balancePublisher
+      balance: balancePublisher,
+      CardOnFileRepository: CardOnFileRepositoryImp()
     )
     
     let viewController = FinanceHomeViewController()
-    let interactor = FinanceHomeInteractor(presenter: viewController)
+    let interactor = FinanceHomeInteractor(presenter: viewController)//FinanceHomeViewController의 listner는 interactor 라고 밝혀주기 위해, interactor에 viewcontroller를 넣고 interector는 네 listner가 '나'다 라는 작업을 수행함 
     interactor.listener = listener
     
     //superPayDashboardBuilder를 생성하기 위해서는, 해당 리불렛이 동작하기 위해 필요로 하는 객체들을 주입해 준다
     let superPayDashboardBuilder = SuperPayDashboardBuilder(dependency: component)
-    
+    let cardOnFileDashboardBuilder = CardOnFileDashboardBuilder(dependency: component)
     
     //필요로 하는 정보를 다 생성했다면 (Builder의 역할)
     //해당 정보를 Router로 넘겨준다
     return FinanceHomeRouter(
       interactor: interactor,
       viewController: viewController,
-      superPayDashboardBuildable:  superPayDashboardBuilder
+      superPayDashboardBuildable:  superPayDashboardBuilder,
+      cardOnFileDashboardBuildable: cardOnFileDashboardBuilder
     )
   }
 }

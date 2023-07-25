@@ -3,6 +3,7 @@ import ModernRIBs
 protocol FinanceHomeRouting: ViewableRouting {
   func attachSuperPayDashboard() //Router를 이용한 자식 리블렛 연결 2️⃣ : Routing 프로토콜 내 메서드 구현
   //Interactor는 라우팅 이라는 프로토콜로 라우터에 접근한다
+  func attachCardOnFileDashboard()
 }
 
 protocol FinanceHomePresentable: Presentable {
@@ -29,6 +30,7 @@ final class FinanceHomeInteractor: PresentableInteractor<FinanceHomePresentable>
     super.didBecomeActive()
     //Router를 이용한 자식 리블렛 연결 1️⃣: outer는 FinanceHomeRouting이라는 프로토콜로 구성되어 있으므로 원하는 이동이 있을 시 해당 프토콜에 메서드를 선언해 줘야 한다
     router?.attachSuperPayDashboard()
+    router?.attachCardOnFileDashboard()
   }
   
   override func willResignActive() {
