@@ -2,9 +2,11 @@ import ModernRIBs
 
 //Router를 이용한 자식 리블렛 연결 4️⃣: 자식 라우터를 생성하기 위해 넣어주는 파라미터로 자식의 리스너가 '나'임을 밝히기 위해
 //'SuperPayDashboardListener' 채택
-protocol FinanceHomeInteractable: Interactable, SuperPayDashboardListener, CardOnFileDashboardListener  {
+protocol FinanceHomeInteractable: Interactable, SuperPayDashboardListener, CardOnFileDashboardListener, AddPaymentMethodListener  {
   var router: FinanceHomeRouting? { get set }
   var listener: FinanceHomeListener? { get set }
+  
+  var presentationDelegateProxy: AdaptivePresentationControllerDelegateProxy { get }
 }
 
 protocol FinanceHomeViewControllable: ViewControllable {
@@ -19,6 +21,8 @@ final class FinanceHomeRouter: ViewableRouter<FinanceHomeInteractable, FinanceHo
   private var superPayRouting: Routing? //자식 라우터를 붙인 뒤 프로퍼티로 들고 있게 만듬
   private let cardOnFileDashboardBuildable: CardOnFileDashboardBuildable
   private var cardOnFileRouting: Routing?
+  private let addPaymentMethodBuildable: AddPaymentMethodBuildable
+  private var addPaymentMethodRouting: Routing?
   
 
   //ViewController는 단순 View로 분류, 비즈니스 로직은 Interactor로 들어감
@@ -26,10 +30,12 @@ final class FinanceHomeRouter: ViewableRouter<FinanceHomeInteractable, FinanceHo
     interactor: FinanceHomeInteractable, //모든 로직의 시작점. Interactor
     viewController: FinanceHomeViewControllable,
     superPayDashboardBuildable: SuperPayDashboardBuildable,
-    cardOnFileDashboardBuildable: CardOnFileDashboardBuildable
+    cardOnFileDashboardBuildable: CardOnFileDashboardBuildable,
+    addPaymentMethodBuildable: AddPaymentMethodBuildable
   ) {
     self.superPayDashboardBuildable = superPayDashboardBuildable
     self.cardOnFileDashboardBuildable = cardOnFileDashboardBuildable
+    self.addPaymentMethodBuildable = addPaymentMethodBuildable
     super.init(interactor: interactor, viewController: viewController)
     interactor.router = self
   }
@@ -65,9 +71,34 @@ final class FinanceHomeRouter: ViewableRouter<FinanceHomeInteractable, FinanceHo
     self.cardOnFileRouting = router
     attachChild(router)
   }
+  
+  func attachAddPaymentMethod() {
+    if addPaymentMethodRouting != nil {
+      return
+    }
+    
+    let router = addPaymentMethodBuildable.build(withListener: interactor)
+    let navigation = NavigationControllerable(root: router.viewControllable)//Navigation이 필요하므로 한 번 싸서 보낸다
+    navigation.navigationController.presentationController?.delegate = interactor.presentationDelegateProxy
+    viewControllable.present(navigation, animated: true, completion: nil)
+    
+    addPaymentMethodRouting = router
+    attachChild(router)
+  }
+  
+  func detachAddPaymentMethod() {
+    guard let router = addPaymentMethodRouting else { //들고 있었던 값 가져오기
+      return
+    }
+    
+    viewControllable.dismiss(completion: nil)
+    detachChild(router)
+    addPaymentMethodRouting = nil
+  }
 }
 
-
+//🍯UIAdaptedPresentaionControllerDelegate 를 통해서 제스쳐로 내리는 걸 알 수 있다
+//Interactor(리블렛의 두뇌 이므로)가 detach 콜을 받고 그걸 router에게 전달해주도록 구현 
 
 // MARK: - 부모가 자식을 연결하는 과정 상세
 

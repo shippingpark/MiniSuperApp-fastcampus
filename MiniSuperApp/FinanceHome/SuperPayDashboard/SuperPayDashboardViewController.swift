@@ -142,7 +142,7 @@ final class SuperPayDashboardViewController: UIViewController, SuperPayDashboard
 // Combine 사용
 // Subject, Publisher, Operator 종류가 적어 가벼운 라이브러리 하나를 추가적으로 쓸 것
 // Combine Ext 라이브러리
-
+//
 // MARK: - 변동이 있는 데이터 전달 과정 정리
 //✏️ 데이터 전달 받고자 하는 리블렛 : SuperPayDashboard / ✏️ 데이터 생성 및 전달해줄 리블렛 : FinanceHome
 //📝 부모 리블렛이 자식 리블렛에게 데이터를 readOnlyPublisher로 전달해주게 만들자

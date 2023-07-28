@@ -4,6 +4,8 @@ protocol FinanceHomeRouting: ViewableRouting {
   func attachSuperPayDashboard() //Router를 이용한 자식 리블렛 연결 2️⃣ : Routing 프로토콜 내 메서드 구현
   //Interactor는 라우팅 이라는 프로토콜로 라우터에 접근한다
   func attachCardOnFileDashboard()
+  func attachAddPaymentMethod()
+  func detachAddPaymentMethod()
 }
 
 protocol FinanceHomePresentable: Presentable {
@@ -14,14 +16,18 @@ protocol FinanceHomeListener: AnyObject {
   // TODO: Declare methods the interactor can invoke to communicate with other RIBs.
 }
 
-final class FinanceHomeInteractor: PresentableInteractor<FinanceHomePresentable>, FinanceHomeInteractable, FinanceHomePresentableListener {
+final class FinanceHomeInteractor: PresentableInteractor<FinanceHomePresentable>, FinanceHomeInteractable, FinanceHomePresentableListener, AdaptivePresentationControllerDelegate {
   
   weak var router: FinanceHomeRouting?
   weak var listener: FinanceHomeListener?
   
+  let presentationDelegateProxy: AdaptivePresentationControllerDelegateProxy//🍯
+  
   override init(presenter: FinanceHomePresentable) {
+    self.presentationDelegateProxy = AdaptivePresentationControllerDelegateProxy()
     super.init(presenter: presenter)
     presenter.listener = self
+    self.presentationDelegateProxy.delegate = self
   }
   
   //여기서 SuperPayDashboard 리블렛을 붙여주면 된다. 내(FinanceHomeVC) 가 ViewDidLoad 된 뒤 호출되는 장소이다
@@ -35,5 +41,23 @@ final class FinanceHomeInteractor: PresentableInteractor<FinanceHomePresentable>
   
   override func willResignActive() {
     super.willResignActive()
+  }
+  
+  func presentationControllerDidDismiss() {
+    router?.detachAddPaymentMethod()
+  }
+  
+  // MARK: - CardOnFileDashboardLisnter
+  func cardOnFileDashboardDidTapAddPaymentMethod() { //자식 Interactor에서 받은 연락. router로 이동
+    router?.attachAddPaymentMethod()
+  }
+  
+  // MARK: - AddPaymentMethodLisnter
+  func addPaymentMethodDidTapClose() {
+    router?.detachAddPaymentMethod()
+  }
+  
+  func addPaymentMethodDidAddCard(paymentMethod: PaymentMethod) {
+    router?.detachAddPaymentMethod()
   }
 }
