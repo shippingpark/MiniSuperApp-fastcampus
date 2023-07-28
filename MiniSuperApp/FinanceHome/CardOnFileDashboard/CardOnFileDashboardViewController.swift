@@ -8,7 +8,9 @@
 import ModernRIBs
 import UIKit
 
+//뷰컨에서 액션이 발생하면 뷰컨은 presentableListner에게 알린다
 protocol CardOnFileDashboardPresentableListener: AnyObject {
+  func didTapAddPaymentMethod()
     
 }
 
@@ -122,7 +124,7 @@ final class CardOnFileDashboardViewController: UIViewController, CardOnFileDashb
   
   @objc
   private func addButtonDidTap() {
-    
+    listener?.didTapAddPaymentMethod()
   }
 }
 

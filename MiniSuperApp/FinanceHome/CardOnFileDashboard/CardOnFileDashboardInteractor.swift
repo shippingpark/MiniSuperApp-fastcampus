@@ -17,8 +17,8 @@ protocol CardOnFileDashboardPresentable: Presentable {
   func update(with viewmodels: [PaymentMethodViewModel]) //백엔드 통신 값 전달 받을 메서드
 }
 
-protocol CardOnFileDashboardListener: AnyObject {
-    // TODO: Declare methods the interactor can invoke to communicate with other RIBs.
+protocol CardOnFileDashboardListener: AnyObject { //부모 Interactor에게 원하는 전달사항 전하기 가능
+  func cardOnFileDashboardDidTapAddPaymentMethod()
 }
 
 //주입 받을 dependency 생성
@@ -29,7 +29,7 @@ protocol CardOnFileDashboardInteractorDependency {
 final class CardOnFileDashboardInteractor: PresentableInteractor<CardOnFileDashboardPresentable>, CardOnFileDashboardInteractable, CardOnFileDashboardPresentableListener {
 
   weak var router: CardOnFileDashboardRouting?
-  weak var listener: CardOnFileDashboardListener?
+  weak var listener: CardOnFileDashboardListener? //부모 리불렛의 Interactor
   
   private let dependency: CardOnFileDashboardInteractorDependency
   private var cancellables: Set<AnyCancellable>
@@ -51,7 +51,7 @@ final class CardOnFileDashboardInteractor: PresentableInteractor<CardOnFileDashb
       
       //🍯 자꾸 weak self 쓰게 되니 방지하는 법 (번거로우니)
       dependency.cardsOnFileRepository.cardOnFile.sink { method in
-        let viewModels = method.prefix(3).map(PaymentMethodViewModel.init)
+        let viewModels = method.prefix(4).map(PaymentMethodViewModel.init)
         self.presenter.update(with: viewModels)
       }.store(in: &cancellables)
         // TODO: Implement business logic here.
@@ -62,6 +62,12 @@ final class CardOnFileDashboardInteractor: PresentableInteractor<CardOnFileDashb
       cancellables.forEach { $0.cancel() } //self에 캡쳐되어 있던 것들이 전부 사라지므로, retain 사이클이 사라지게 됨
       cancellables.removeAll()
     }
+  
+  //전체적인 구조를 고려해 보았을 때, 화면의 일부인 여기서 모달창을 (CarOnFile) 띄우는 것 보다는
+  //FinancHome에서 띄우는 것이 적절해 보임 (바로 router에게 요청하지 않겠다는 뜻)
+  func didTapAddPaymentMethod() {
+    listener?.cardOnFileDashboardDidTapAddPaymentMethod()
+  }
 }
 
 

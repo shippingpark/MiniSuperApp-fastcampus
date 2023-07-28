@@ -6,15 +6,20 @@
 //
 
 import Foundation
+import Combine
 
 
 //서버 API를 호출해서 유저에게 등록된 카드 목록을 가져오는 역할
 //
 protocol CardOnFileRepository {
   var cardOnFile: ReadOnlyCurrentValuePublisher<[PaymentMethod]> { get }
+  //카드 추가할 때 값 세 개를 넘기기 보다는 dataModel 을 생성해서 넘기도록 하겠음
+  //🔥 비동기 return 값임을 고려하여 리턴값은 AnyPublisher로 (combine import)
+  func addCard(info: AddPaymentMethodInfo) -> AnyPublisher<PaymentMethod, Error>
 }
 
 //Repository를 구현한 Imp 객체
+//등록된 카드를 불러오고, 카드를 등록하는 역할로 발전시키면 자연스러울 듯
 final class CardOnFileRepositoryImp: CardOnFileRepository {
   //외부에 노출 될 cardOnFile
   //Interactor에서 cardOnFile 값을 읽어서 UI를 업데이트 해 주면 된다 
@@ -23,10 +28,21 @@ final class CardOnFileRepositoryImp: CardOnFileRepository {
   private let paymentMethodsSubject = CurrentValuePublisher<[PaymentMethod]>([
     PaymentMethod(id: "0", name: "우리은행", digits: "0123", color: "#f19a38ff", isPrimary: false),
     PaymentMethod(id: "1", name: "신한카드", digits: "0987", color: "#3478f6ff", isPrimary: false),
-    PaymentMethod(id: "2", name: "현대카드", digits: "8121", color: "#f19a38ff", isPrimary: false),
-    PaymentMethod(id: "3", name: "국민은행", digits: "2812", color: "#f19a38ff", isPrimary: false),
-    PaymentMethod(id: "4", name: "카카오뱅크", digits: "8751", color: "#f19a38ff", isPrimary: false)
+//    PaymentMethod(id: "2", name: "현대카드", digits: "8121", color: "#f19a38ff", isPrimary: false),
+//    PaymentMethod(id: "3", name: "국민은행", digits: "2812", color: "#f19a38ff", isPrimary: false),
+//    PaymentMethod(id: "4", name: "카카오뱅크", digits: "8751", color: "#f19a38ff", isPrimary: false)
   ]) //마지막 컬러 두 자리는 알파값임 . ff라고 하면 알파 값이 없는 solid color
+  
+  func addCard(info: AddPaymentMethodInfo) -> AnyPublisher<PaymentMethod, Error> {
+    let paymentMethod = PaymentMethod(id: "00", name: "New 카드", digits: "\(info.number.suffix(4))", color: "", isPrimary: false)
+    
+    //카드가 추가 되었을 때 stream도 없데이트가 되어야 함. 이쪽에서 해 주면 자연스러울 듯 
+    var new = paymentMethodsSubject.value
+    new.append(paymentMethod)
+    paymentMethodsSubject.send(new)
+    
+    return Just(paymentMethod).setFailureType(to: Error.self).eraseToAnyPublisher()
+  }
 }
 
 
