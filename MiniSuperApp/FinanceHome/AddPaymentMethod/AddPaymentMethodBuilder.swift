@@ -1,0 +1,41 @@
+//
+//  AddPaymentMethodBuilder.swift
+//  MiniSuperApp
+//
+//  Created by 박혜운 on 2023/07/28.
+//
+
+import ModernRIBs
+
+protocol AddPaymentMethodDependency: Dependency {
+  var cardsOnFileRepository: CardOnFileRepository { get }
+}
+
+final class AddPaymentMethodComponent: Component<AddPaymentMethodDependency>, AddPaymentMethodInteractorDependency {
+  //이 리포지토리는 부모에게서부터 받아오겠음
+  var cardOnFileRepository: CardOnFileRepository { dependency.cardsOnFileRepository }
+}
+
+// MARK: - Builder
+
+protocol AddPaymentMethodBuildable: Buildable {
+    func build(withListener listener: AddPaymentMethodListener) -> AddPaymentMethodRouting
+}
+
+final class AddPaymentMethodBuilder: Builder<AddPaymentMethodDependency>, AddPaymentMethodBuildable {
+
+    override init(dependency: AddPaymentMethodDependency) {
+        super.init(dependency: dependency)
+    }
+
+    func build(withListener listener: AddPaymentMethodListener) -> AddPaymentMethodRouting {
+        let component = AddPaymentMethodComponent(dependency: dependency)
+        let viewController = AddPaymentMethodViewController()
+        let interactor = AddPaymentMethodInteractor(
+          presenter: viewController,
+          dependency: component
+        )
+        interactor.listener = listener
+        return AddPaymentMethodRouter(interactor: interactor, viewController: viewController)
+    }
+}
