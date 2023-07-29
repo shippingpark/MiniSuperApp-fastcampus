@@ -10,6 +10,15 @@ let package = Package(
     .library(
       name: "AddPaymentMethod",
       targets: ["AddPaymentMethod"]),
+    
+    .library( //새로운 라이브러리
+      name: "FinanceEntity",
+      targets: ["FinanceEntity"]),
+    
+    .library( //새로운 라이브러리 모듈
+      name: "FinanceRepository",
+      targets: ["FinanceRepository"])
+    
   ],
   dependencies: [
     .package(url: "https://github.com/DevYeom/ModernRIBs.git", from: "1.0.1"), //ModernRIBs
@@ -17,13 +26,24 @@ let package = Package(
     //로컬 패키지 같은 경우에는 로컬 경로로 지정해줄 수 있다 (🔥내가 아닌 패키지의 모듈은 여기에🔥)
   ],
   targets: [
-      // Targets are the basic building blocks of a package. A target can define a module or a test suite.
-      // Targets can depend on other targets in this package, and on products in packages this package depends on.
     .target(
       name: "AddPaymentMethod",
       dependencies: [
-        "ModernRIBs"
+        "ModernRIBs",
+        "FinanceEntity" //이 패키지 내에서 해당 라이브러리를 사용해야 하므로 디펜던시에 추가해준다 
       ]
     ),
+    .target(
+      name: "FinanceEntity", //추가 이후에 이름으로 내부 모듈에 적용 가능
+      dependencies: [
+      ]
+    ),
+    .target(
+      name: "FinanceRepository",
+      dependencies: [
+        "FinanceEntity",
+        .product(name: "CombineUtil", package: "Platform")
+      ]
+    )
   ]
 )
