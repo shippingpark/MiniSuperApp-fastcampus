@@ -72,6 +72,11 @@ final class TopupInteractor: Interactor, TopupInteractable, AddPaymentMethodList
   func addPaymentMethodDidAddCard(paymentMethod: PaymentMethod) {
     listener?.topupDidClose()
   }
+  
+  func enterAmountDidTapClose() {
+    router?.detachEnterAmount()//일단 해당 리블렛 디태치
+    listener?.topupDidClose() //리스너에게 우리 끝났다고도 알려줌 (리스너가 topup(self) 디태치 할 수 있도록)
+  }
 }
 
 // MARK: - 뷰가 있는 리블렛과 없는 리블렛의 차이
