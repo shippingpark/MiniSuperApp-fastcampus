@@ -52,7 +52,9 @@ final class SuperPayDashboardInteractor: PresentableInteractor<SuperPayDashboard
     override func didBecomeActive() {
         super.didBecomeActive()
       //cancellable이 self에 있으므로 weak self   
-      dependency.balance.sink { [weak self] balance in //가져온 balance를 가지고 UI에 업데이트 시도
+      dependency.balance
+        .receive(on: DispatchQueue.main)
+        .sink { [weak self] balance in //가져온 balance를 가지고 UI에 업데이트 시도
         //값을 업데이트 하고 싶다면, presentable 프로토콜에 적당한 메소드 선언
         self?.dependency.balanceFormatter.string(from: NSNumber(value: balance)).map({//언래핑 하기 위해 map 사용
           self?.presenter.updateBalance( $0 )

@@ -28,6 +28,7 @@
 		CE684FA42A74EE1E001EA3C5 /* CardOnFileInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE684FA02A74EE1E001EA3C5 /* CardOnFileInteractor.swift */; };
 		CE684FA72A74EE3D001EA3C5 /* CardOnFileCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE684FA52A74EE3D001EA3C5 /* CardOnFileCell.swift */; };
 		CE684FA82A74EE3D001EA3C5 /* CardOnFileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE684FA62A74EE3D001EA3C5 /* CardOnFileViewController.swift */; };
+		CE684FAA2A751EA4001EA3C5 /* SuperPayRespository.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE684FA92A751EA4001EA3C5 /* SuperPayRespository.swift */; };
 		CEAB88E92A6E3C6D00E9FD69 /* SuperPayDashboardRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAB88E52A6E3C6D00E9FD69 /* SuperPayDashboardRouter.swift */; };
 		CEAB88EA2A6E3C6D00E9FD69 /* SuperPayDashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAB88E62A6E3C6D00E9FD69 /* SuperPayDashboardViewController.swift */; };
 		CEAB88EB2A6E3C6D00E9FD69 /* SuperPayDashboardBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEAB88E72A6E3C6D00E9FD69 /* SuperPayDashboardBuilder.swift */; };
@@ -106,6 +107,7 @@
 		CE684FA02A74EE1E001EA3C5 /* CardOnFileInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardOnFileInteractor.swift; sourceTree = "<group>"; };
 		CE684FA52A74EE3D001EA3C5 /* CardOnFileCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CardOnFileCell.swift; path = Samples/Topup/CardOnFileCell.swift; sourceTree = SOURCE_ROOT; };
 		CE684FA62A74EE3D001EA3C5 /* CardOnFileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CardOnFileViewController.swift; path = Samples/Topup/CardOnFileViewController.swift; sourceTree = SOURCE_ROOT; };
+		CE684FA92A751EA4001EA3C5 /* SuperPayRespository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperPayRespository.swift; sourceTree = "<group>"; };
 		CEAB88E52A6E3C6D00E9FD69 /* SuperPayDashboardRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperPayDashboardRouter.swift; sourceTree = "<group>"; };
 		CEAB88E62A6E3C6D00E9FD69 /* SuperPayDashboardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperPayDashboardViewController.swift; sourceTree = "<group>"; };
 		CEAB88E72A6E3C6D00E9FD69 /* SuperPayDashboardBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperPayDashboardBuilder.swift; sourceTree = "<group>"; };
@@ -271,6 +273,7 @@
 			isa = PBXGroup;
 			children = (
 				CEAB89092A6FA7F800E9FD69 /* CardOnFileRepository.swift */,
+				CE684FA92A751EA4001EA3C5 /* SuperPayRespository.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -531,6 +534,7 @@
 				F5EAA22D270B3A4500EF2B70 /* RideTypeView.swift in Sources */,
 				CEAB88FD2A6F93A400E9FD69 /* CardOnFileDashboardRouter.swift in Sources */,
 				CEAB88EC2A6E3C6D00E9FD69 /* SuperPayDashboardInteractor.swift in Sources */,
+				CE684FAA2A751EA4001EA3C5 /* SuperPayRespository.swift in Sources */,
 				CEAB88F72A6F8EF600E9FD69 /* NumberFormatter.swift in Sources */,
 				F5EAA219270B395900EF2B70 /* HomeWidgetView.swift in Sources */,
 				F57F6AFE26DB4CD700C0117D /* RootTabBarController.swift in Sources */,
