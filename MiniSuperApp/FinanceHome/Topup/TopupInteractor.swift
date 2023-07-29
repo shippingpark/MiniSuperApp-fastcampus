@@ -8,32 +8,75 @@
 import ModernRIBs
 
 protocol TopupRouting: Routing {
-    func cleanupViews()
+  func cleanupViews()
+  func attachAddPaymentMehtod()
+  func detachAddPaymentMehtod()
     // TODO: Declare methods the interactor can invoke to manage sub-tree via the router.
 }
 
 protocol TopupListener: AnyObject {
-    // TODO: Declare methods the interactor can invoke to communicate with other RIBs.
+    func topupDidClose()
 }
 
-final class TopupInteractor: Interactor, TopupInteractable {
-
-    weak var router: TopupRouting?
-    weak var listener: TopupListener?
-
-    // TODO: Add additional dependencies to constructor. Do not perform any logic
-    // in constructor.
-    override init() {}
-
-    override func didBecomeActive() {
-        super.didBecomeActive()
-        //print("붙여졌는 지 확인")
-    }
-
-    override func willResignActive() {
-        super.willResignActive()
-
-        router?.cleanupViews()
-        // TODO: Pause any business logic.
-    }
+protocol TopupInteractorDependency {
+  var cardOnFileRepository: CardOnFileRepository { get }
 }
+
+final class TopupInteractor: Interactor, TopupInteractable, AddPaymentMethodListener, AdaptivePresentationControllerDelegate {
+
+  weak var router: TopupRouting?
+  weak var listener: TopupListener?
+  let presentationDelegateProxy: AdaptivePresentationControllerDelegateProxy//🍯
+  
+  private let dependency: TopupInteractorDependency
+  
+  init(
+    dependency: TopupInteractorDependency
+  ) {
+    self.presentationDelegateProxy = AdaptivePresentationControllerDelegateProxy()
+    self.dependency = dependency
+    super.init()
+    self.presentationDelegateProxy.delegate = self
+  }
+
+  override func didBecomeActive() {
+      super.didBecomeActive()
+    
+    if dependency.cardOnFileRepository.cardOnFile.value.isEmpty {
+      //카드 추가 화면
+      router?.attachAddPaymentMehtod()
+    
+    } else {
+      //금액 입력 확인
+    }
+  }
+
+  override func willResignActive() {
+      super.willResignActive()
+
+      router?.cleanupViews()
+      // TODO: Pause any business logic.
+  }
+  
+  
+  func presentationControllerDidDismiss() {
+    listener?.topupDidClose()
+  }
+  
+  func addPaymentMethodDidTapClose() {
+    router?.detachAddPaymentMehtod() //라우터 상에서 삭제
+    listener?.topupDidClose() //부모에게 삭제해 달라고 요청 (자식 라우터 해제 작업)🔥
+  }
+  
+  func addPaymentMethodDidAddCard(paymentMethod: PaymentMethod) {
+    listener?.topupDidClose()
+  }
+}
+
+// MARK: - 뷰가 있는 리블렛과 없는 리블렛의 차이
+//1️⃣ 뷰가 있는 리블렛
+//떠 있던 화면을 삭제시키는 건 부모의 역할
+//2️⃣뷰가 없는 리블렛
+//부모 리블렛이 present해 준 뷰가 없기 때문에 직접 dismiss 하지 않는다
+//자신이 끝났을 때, 본인이 올린 화면을 본인이 직접 다 닫을 책임이 있다
+

@@ -10,7 +10,8 @@ protocol FinanceHomeDependency: Dependency {
 //자식들의 디펜던시를 부모 컴포넌트가 confirm 하도록 함
 //🍯 타입 캐스팅을 통한 자식 리블렛 데이터 접근 제한 
 final class FinanceHomeComponent: Component<FinanceHomeDependency>, SuperPayDashboardDependency, CardOnFileDashboardDependency, AddPaymentMethodDependency, TopupDependency {
-  var cardsOnFileRepository: CardOnFileRepository
+  var cardOnFileRepository: CardOnFileRepository
+  
   var balance: ReadOnlyCurrentValuePublisher<Double> { balancePublisher } //자식에게는 ReadOnly
   var topupBaseViewController: ViewControllable
   private var balancePublisher: CurrentValuePublisher<Double>
@@ -18,11 +19,11 @@ final class FinanceHomeComponent: Component<FinanceHomeDependency>, SuperPayDash
   init(
     dependency: FinanceHomeDependency,
     balance: CurrentValuePublisher<Double>, //생성자에서 받아오고
-    CardOnFileRepository: CardOnFileRepository,
+    cardOnFileRepository: CardOnFileRepository,
     topupBaseViewController: ViewControllable
   ) {
     self.balancePublisher = balance
-    self.cardsOnFileRepository = CardOnFileRepository
+    self.cardOnFileRepository = cardOnFileRepository
     self.topupBaseViewController = topupBaseViewController
     super.init(dependency: dependency)
     
@@ -51,8 +52,8 @@ final class FinanceHomeBuilder: Builder<FinanceHomeDependency>, FinanceHomeBuild
     let component = FinanceHomeComponent(
       dependency: dependency,
       balance: balancePublisher,
-      CardOnFileRepository: CardOnFileRepositoryImp(),
-      topupBaseViewController: viewController
+      cardOnFileRepository: CardOnFileRepositoryImp(),
+      topupBaseViewController: viewController//자식에게 내 뷰컨을 넘겨줌 
     )
     
     

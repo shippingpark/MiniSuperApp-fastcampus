@@ -23,7 +23,7 @@ protocol CardOnFileDashboardListener: AnyObject { //부모 Interactor에게 원�
 
 //주입 받을 dependency 생성
 protocol CardOnFileDashboardInteractorDependency {
-  var cardsOnFileRepository: CardOnFileRepository { get } //주입 받을 dependency 생성
+  var cardOnFileRepository: CardOnFileRepository { get } //주입 받을 dependency 생성
 }
 
 final class CardOnFileDashboardInteractor: PresentableInteractor<CardOnFileDashboardPresentable>, CardOnFileDashboardInteractable, CardOnFileDashboardPresentableListener {
@@ -50,7 +50,7 @@ final class CardOnFileDashboardInteractor: PresentableInteractor<CardOnFileDashb
         super.didBecomeActive()
       
       //🍯 자꾸 weak self 쓰게 되니 방지하는 법 (번거로우니)
-      dependency.cardsOnFileRepository.cardOnFile.sink { method in
+      dependency.cardOnFileRepository.cardOnFile.sink { method in
         let viewModels = method.prefix(4).map(PaymentMethodViewModel.init)
         self.presenter.update(with: viewModels)
       }.store(in: &cancellables)

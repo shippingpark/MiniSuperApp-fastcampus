@@ -8,12 +8,12 @@
 import ModernRIBs
 
 protocol AddPaymentMethodDependency: Dependency {
-  var cardsOnFileRepository: CardOnFileRepository { get }
+  var cardOnFileRepository: CardOnFileRepository { get }
 }
 
 final class AddPaymentMethodComponent: Component<AddPaymentMethodDependency>, AddPaymentMethodInteractorDependency {
   //이 리포지토리는 부모에게서부터 받아오겠음
-  var cardOnFileRepository: CardOnFileRepository { dependency.cardsOnFileRepository }
+  var cardOnFileRepository: CardOnFileRepository { dependency.cardOnFileRepository }
 }
 
 // MARK: - Builder

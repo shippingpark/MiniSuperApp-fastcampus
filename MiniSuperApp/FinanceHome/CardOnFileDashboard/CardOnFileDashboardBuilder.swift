@@ -8,13 +8,13 @@
 import ModernRIBs
 
 protocol CardOnFileDashboardDependency: Dependency {
-  var cardsOnFileRepository: CardOnFileRepository { get }
+  var cardOnFileRepository: CardOnFileRepository { get }
     // TODO: Declare the set of dependencies required by this RIB, but cannot be
     // created by this RIB.
 }
 
 final class CardOnFileDashboardComponent: Component<CardOnFileDashboardDependency>, CardOnFileDashboardInteractorDependency {
-  var cardsOnFileRepository: CardOnFileRepository { dependency.cardsOnFileRepository }//얘는 어디서 가져와야 할까?
+  var cardOnFileRepository: CardOnFileRepository { dependency.cardOnFileRepository }//얘는 어디서 가져와야 할까?
   //내가 만들지, 부모가 만들어서 주입해 줄 지 고민한다.
   //balance가 그랬던 것 처럼 금융 관련 시작점인 부모가 내려주는 것으로 하자
 }
