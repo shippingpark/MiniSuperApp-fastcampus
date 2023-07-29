@@ -62,8 +62,13 @@ final class TopupRouter: Router<TopupInteractable>, TopupRouting {
     }
     
     let router = addPaymentMethodBuildable.build(withListener: interactor)
+    
+    if let navigationControllable = navigationControllable {
+      navigationControllable.pushViewController(router.viewControllable, animated: true)
+    } else {
+      presentInsideNavigation(router.viewControllable)
+    }
     //(navigationcontroller에 싸서 보내야 함. 그래야 뒤로 닫기 버튼 같은 것을 활용할 수 있기 때문에
-    presentInsideNavigation(router.viewControllable)
     attachChild(router)
     addPaymentMethodRouting = router
   }
@@ -124,6 +129,11 @@ final class TopupRouter: Router<TopupInteractable>, TopupRouting {
     navigationControllable?.popViewController(animated: true)
     detachChild(router)
     cardOnFileRouting = nil
+  }
+  
+  func popToRoot() {
+    navigationControllable?.popToRoot(animated: true)
+    resetChildRouting()
   }
   
   //네비게이션으로 화면을 띄우는 헬퍼 메소드

@@ -15,6 +15,7 @@ protocol TopupRouting: Routing {
   func detachEnterAmount()
   func attachCardOnFile(paymentMethods: [PaymentMethod])
   func detachCardOnFile()
+  func popToRoot()
     // TODO: Declare methods the interactor can invoke to manage sub-tree via the router.
 }
 
@@ -33,6 +34,8 @@ final class TopupInteractor: Interactor, TopupInteractable, AddPaymentMethodList
   weak var router: TopupRouting?
   weak var listener: TopupListener?
   let presentationDelegateProxy: AdaptivePresentationControllerDelegateProxy //🍯
+  
+  private var isEnterAmountRoot: Bool = false //🔥카드가 없어 추가하기 된 화면인지, 카드 추가하기 버튼을 눌러 들어온 추가하기 화면인 지 확인할 필요가 생김. 추가하기 버튼을 누르면 화면이 이동해야하는데, 추가하기 버튼으로 들어온 상태에선 카드 정보 화면이 이미 존재하여 pop, 뒤로 나가야 하기 때문임
   
   private var paymentMethods: [PaymentMethod] { //🍯 간결하게 표현하기 위한
     dependency.cardOnFileRepository.cardOnFile.value
@@ -54,9 +57,11 @@ final class TopupInteractor: Interactor, TopupInteractable, AddPaymentMethodList
     
     if let card = dependency.cardOnFileRepository.cardOnFile.value.first { //카드가 있다면
       //금액 입력 확인
+      isEnterAmountRoot = true
       dependency.paymentMethodStream.send(card) //스트림에 첫번째 카드 값을 보냄 //여기서 흘린 스트림을 EnterAmount가 읽어서 화면에 표시해야 함
       router?.attachEnterAmount()
     } else {//카드 추가 화면
+      isEnterAmountRoot = false
       
       router?.attachAddPaymentMehtod()
     }
@@ -80,7 +85,13 @@ final class TopupInteractor: Interactor, TopupInteractable, AddPaymentMethodList
   
   func addPaymentMethodDidAddCard(paymentMethod: PaymentMethod) {
     dependency.paymentMethodStream.send(paymentMethod)
-    router?.attachEnterAmount()
+    if isEnterAmountRoot { //amount화면으로 들어왔다면
+      router?.popToRoot()
+    } else {
+      isEnterAmountRoot = true
+      router?.attachEnterAmount()
+      
+    }
   }
   
   func enterAmountDidTapClose() {
@@ -103,7 +114,7 @@ final class TopupInteractor: Interactor, TopupInteractable, AddPaymentMethodList
   }
   
   func cardOnFileDidTapAddCard() {
-    // attach add card
+    router?.attachAddPaymentMehtod()
   }
   
   func cardOnFileDidSelect(at index: Int) {
