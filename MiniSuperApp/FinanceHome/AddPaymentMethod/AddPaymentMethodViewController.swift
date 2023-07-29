@@ -64,16 +64,19 @@ final class AddPaymentMethodViewController: UIViewController, AddPaymentMethodPr
     return textField
   }
   
-  init() {
+  init(closerButtonType: DismissButtonType) {
     super.init(nibName: nil, bundle: nil)
     
     setupViews()
+    setupNavigationItem(with: closerButtonType, target: self, action: #selector(didTapClose))
   }
   
   required init?(coder: NSCoder) {
     super.init(coder: coder)
     
     setupViews()
+    //네비게이션바의 어떤 버튼이 활성화 될지는 부모 쪽에서 결정을 해 줘야 할 것으로 보임
+    setupNavigationItem(with: .close, target: self, action: #selector(didTapClose))
   }
   
   private let label: UILabel = {
@@ -86,7 +89,6 @@ final class AddPaymentMethodViewController: UIViewController, AddPaymentMethodPr
     title = "카드추가"
     view.backgroundColor = .backgroundColor
     
-    setupNavigationItem(with: .back, target: self, action: #selector(didTapClose))
     
     view.addSubview(cardNumberTextField)
     view.addSubview(stackView)

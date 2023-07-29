@@ -9,7 +9,7 @@ import ModernRIBs
 
 protocol TopupRouting: Routing {
   func cleanupViews()
-  func attachAddPaymentMehtod()
+  func attachAddPaymentMehtod(closeButtonType: DismissButtonType)
   func detachAddPaymentMehtod()
   func attachEnterAmount()
   func detachEnterAmount()
@@ -62,8 +62,7 @@ final class TopupInteractor: Interactor, TopupInteractable, AddPaymentMethodList
       router?.attachEnterAmount()
     } else {//카드 추가 화면
       isEnterAmountRoot = false
-      
-      router?.attachAddPaymentMehtod()
+      router?.attachAddPaymentMehtod(closeButtonType: .close) //🔥상황에 따른 백버튼 구분 
     }
   }
 
@@ -80,7 +79,10 @@ final class TopupInteractor: Interactor, TopupInteractable, AddPaymentMethodList
   
   func addPaymentMethodDidTapClose() {
     router?.detachAddPaymentMehtod() //라우터 상에서 삭제
-    listener?.topupDidClose() //부모에게 삭제해 달라고 요청 (자식 라우터 해제 작업)🔥
+    if isEnterAmountRoot == false {
+      //부모에게 삭제해 달라고 요청 (자식 라우터 해제 작업)🔥
+      listener?.topupDidClose() //전체를 닫아주기
+    }
   }
   
   func addPaymentMethodDidAddCard(paymentMethod: PaymentMethod) {
@@ -114,7 +116,7 @@ final class TopupInteractor: Interactor, TopupInteractable, AddPaymentMethodList
   }
   
   func cardOnFileDidTapAddCard() {
-    router?.attachAddPaymentMehtod()
+    router?.attachAddPaymentMehtod(closeButtonType: .back) //🔥상황에 따른 백버튼 구분
   }
   
   func cardOnFileDidSelect(at index: Int) {
