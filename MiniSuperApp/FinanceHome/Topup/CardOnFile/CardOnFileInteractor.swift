@@ -17,7 +17,9 @@ protocol CardOnFilePresentable: Presentable {
 }
 
 protocol CardOnFileListener: AnyObject {
-    func cardOnFileDidTapClose()
+  func cardOnFileDidTapClose()
+  func cardOnFileDidTapAddCard()
+  func cardOnFileDidSelect(at Index: Int)
 }
 
 final class CardOnFileInteractor: PresentableInteractor<CardOnFilePresentable>, CardOnFileInteractable, CardOnFilePresentableListener {
@@ -50,7 +52,11 @@ final class CardOnFileInteractor: PresentableInteractor<CardOnFilePresentable>, 
     listener?.cardOnFileDidTapClose() //부모에게 뒤로 가달라고 알려야 함 
   }
   
-  func didSelectItem(at: Int) {
-    
+  func didSelectItem(at index: Int) {
+    if index >= paymentMethods.count { //전체 숫자보다 크거나 같다면, 마지막 추가하기 버튼을 누른 것이므로 추가 화면으로 이동하고
+      listener?.cardOnFileDidTapAddCard()
+    } else {
+      listener?.cardOnFileDidSelect(at: index) //카드가 선택되었다면, 이걸 부모에게 전달
+    }
   }
 }

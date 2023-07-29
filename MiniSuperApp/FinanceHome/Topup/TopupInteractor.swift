@@ -95,6 +95,17 @@ final class TopupInteractor: Interactor, TopupInteractable, AddPaymentMethodList
   func cardOnFileDidTapClose() {
     router?.detachCardOnFile()
   }
+  
+  func cardOnFileDidTapAddCard() {
+    // attach add card
+  }
+  
+  func cardOnFileDidSelect(at index: Int) {
+    if let selected = paymentMethods[safe: index] { //🍯Array Extesion, index에 잘 못 접근하는 일을 원천 차단하고자
+      dependency.paymentMethodStream.send(selected)
+    } //카드를 선택하고 나면
+    router?.detachCardOnFile()
+  }
 }
 
 // MARK: - 뷰가 있는 리블렛과 없는 리블렛의 차이

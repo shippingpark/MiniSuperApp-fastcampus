@@ -78,7 +78,7 @@ final class CardOnFileViewController: UIViewController, CardOnFilePresentable, C
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     tableView.deselectRow(at: indexPath, animated: true)
     
-    listener?.didSelectItem(at: indexPath.row)
+    listener?.didSelectItem(at: indexPath.row) //인덱스 패스의 row를 전달하도록 
   }
   
   @objc
