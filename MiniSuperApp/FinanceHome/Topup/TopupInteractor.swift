@@ -20,6 +20,7 @@ protocol TopupRouting: Routing {
 
 protocol TopupListener: AnyObject {
     func topupDidClose()
+  func topupDidFinish()
 }
 
 protocol TopupInteractorDependency {
@@ -90,6 +91,10 @@ final class TopupInteractor: Interactor, TopupInteractable, AddPaymentMethodList
 //    router?.attachCardOnFile(paumentMethods: self.dependency.cardOnFileRepository.cardOnFile.value) //이때 PaymentMethodArray를 넘겨주면 딱 좋을 것 같음
     router?.attachCardOnFile(paymentMethods: paymentMethods)
     
+  }
+  
+  func enterAmountDidFinsihTopup() {//충전이 완료
+    listener?.topupDidFinish()
   }
   
   func cardOnFileDidTapClose() {

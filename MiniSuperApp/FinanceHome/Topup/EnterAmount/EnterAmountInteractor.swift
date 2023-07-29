@@ -7,24 +7,29 @@
 
 import ModernRIBs
 import Combine
+import Foundation
 
 protocol EnterAmountRouting: ViewableRouting {
     // TODO: Declare methods the interactor can invoke to manage sub-tree via the router.
 }
 
 protocol EnterAmountPresentable: Presentable {
-    var listener: EnterAmountPresentableListener? { get set }
-    func updateSelectedPaymentMethod(with viewModel: SelectedPaymentMethodViewModel)
-    // TODO: Declare methods the interactor can invoke the presenter to present data.
+  var listener: EnterAmountPresentableListener? { get set }
+  func updateSelectedPaymentMethod(with viewModel: SelectedPaymentMethodViewModel)
+  func startLoading()
+  func stopLoading()
+  
 }
 
 protocol EnterAmountListener: AnyObject {//부모 Interactor에게 요청할 부분
   func enterAmountDidTapClose()
   func enterAmountDidTapPaymentMethod()
+  func enterAmountDidFinsihTopup()
 }
 
 protocol EnterAmountInteractorDependency {
   var selectedPaymentMethod: ReadOnlyCurrentValuePublisher<PaymentMethod> { get }
+  var superPayRepository: SuperPayRepository { get }
 }
 
 final class EnterAmountInteractor: PresentableInteractor<EnterAmountPresentable>, EnterAmountInteractable, EnterAmountPresentableListener {
@@ -70,6 +75,24 @@ final class EnterAmountInteractor: PresentableInteractor<EnterAmountPresentable>
   }
   
   func didTapTopup(with amount: Double) {
+    //여기서 API 호출
+    presenter.startLoading()
     
+    dependency.superPayRepository.topup( //🔥superPayRepository는 백그라운드에서 실행
+      amount: amount,
+      paymentMethodID: dependency.selectedPaymentMethod.value.id
+    )
+    .receive(on: DispatchQueue.main)//🔥그러니 받기 전에 한 번 receive해줘야 함
+    .sink(
+      receiveCompletion: { [weak self] _ in
+        self?.presenter.stopLoading()//🔥그러나 UI는 메인에서
+      },
+      receiveValue: { [weak self] in
+        self?.listener?.enterAmountDidFinsihTopup()//🔥그러나 UI는 메인에서 실행되길 바람
+      }
+    ).store(in: &cancellables)
   }
 }
+
+// MARK: - 잔액 충전 API를 여기서 호출
+

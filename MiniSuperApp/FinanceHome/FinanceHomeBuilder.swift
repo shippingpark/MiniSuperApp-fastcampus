@@ -11,19 +11,18 @@ protocol FinanceHomeDependency: Dependency {
 //🍯 타입 캐스팅을 통한 자식 리블렛 데이터 접근 제한 
 final class FinanceHomeComponent: Component<FinanceHomeDependency>, SuperPayDashboardDependency, CardOnFileDashboardDependency, AddPaymentMethodDependency, TopupDependency {
   var cardOnFileRepository: CardOnFileRepository
-  
-  var balance: ReadOnlyCurrentValuePublisher<Double> { balancePublisher } //자식에게는 ReadOnly
+  let superPayRepository: SuperPayRepository
+  var balance: ReadOnlyCurrentValuePublisher<Double> { superPayRepository.balance } //자식에게는 ReadOnly
   var topupBaseViewController: ViewControllable
-  private var balancePublisher: CurrentValuePublisher<Double>
   
   init(
     dependency: FinanceHomeDependency,
-    balance: CurrentValuePublisher<Double>, //생성자에서 받아오고
     cardOnFileRepository: CardOnFileRepository,
+    superPayRepository: SuperPayRepository,
     topupBaseViewController: ViewControllable
   ) {
-    self.balancePublisher = balance
     self.cardOnFileRepository = cardOnFileRepository
+    self.superPayRepository = superPayRepository
     self.topupBaseViewController = topupBaseViewController
     super.init(dependency: dependency)
     
@@ -51,8 +50,8 @@ final class FinanceHomeBuilder: Builder<FinanceHomeDependency>, FinanceHomeBuild
     
     let component = FinanceHomeComponent(
       dependency: dependency,
-      balance: balancePublisher,
       cardOnFileRepository: CardOnFileRepositoryImp(),
+      superPayRepository: SuperPayRepositoryImp(),
       topupBaseViewController: viewController//자식에게 내 뷰컨을 넘겨줌 
     )
     
