@@ -9,18 +9,21 @@ protocol FinanceHomeDependency: Dependency {
 //컴포넌트 : 리불렛이 필요로 하는 정보들을 담는 객체 (자식 리불렛이 필요로 하는 것들 포함)
 //자식들의 디펜던시를 부모 컴포넌트가 confirm 하도록 함
 //🍯 타입 캐스팅을 통한 자식 리블렛 데이터 접근 제한 
-final class FinanceHomeComponent: Component<FinanceHomeDependency>, SuperPayDashboardDependency, CardOnFileDashboardDependency, AddPaymentMethodDependency {
+final class FinanceHomeComponent: Component<FinanceHomeDependency>, SuperPayDashboardDependency, CardOnFileDashboardDependency, AddPaymentMethodDependency, TopupDependency {
   var cardsOnFileRepository: CardOnFileRepository
   var balance: ReadOnlyCurrentValuePublisher<Double> { balancePublisher } //자식에게는 ReadOnly
+  var topupBaseViewController: ViewControllable
   private var balancePublisher: CurrentValuePublisher<Double>
   
   init(
     dependency: FinanceHomeDependency,
     balance: CurrentValuePublisher<Double>, //생성자에서 받아오고
-    CardOnFileRepository: CardOnFileRepository
+    CardOnFileRepository: CardOnFileRepository,
+    topupBaseViewController: ViewControllable
   ) {
     self.balancePublisher = balance
     self.cardsOnFileRepository = CardOnFileRepository
+    self.topupBaseViewController = topupBaseViewController
     super.init(dependency: dependency)
     
   }
@@ -43,14 +46,16 @@ final class FinanceHomeBuilder: Builder<FinanceHomeDependency>, FinanceHomeBuild
   func build(withListener listener: FinanceHomeListener) -> FinanceHomeRouting {
     //Finance는 금융 관련 기능의 첫 시작이므로 여기서 balance(잔여 금액) 시작하는 게 좋아 보임
     let balancePublisher = CurrentValuePublisher<Double>(10000)
+    let viewController = FinanceHomeViewController()
     
     let component = FinanceHomeComponent(
       dependency: dependency,
       balance: balancePublisher,
-      CardOnFileRepository: CardOnFileRepositoryImp()
+      CardOnFileRepository: CardOnFileRepositoryImp(),
+      topupBaseViewController: viewController
     )
     
-    let viewController = FinanceHomeViewController()
+    
     let interactor = FinanceHomeInteractor(presenter: viewController)//FinanceHomeViewController의 listner는 interactor 라고 밝혀주기 위해, interactor에 viewcontroller를 넣고 interector는 네 listner가 '나'다 라는 작업을 수행함
     interactor.listener = listener
     
@@ -58,6 +63,7 @@ final class FinanceHomeBuilder: Builder<FinanceHomeDependency>, FinanceHomeBuild
     let superPayDashboardBuilder = SuperPayDashboardBuilder(dependency: component)
     let cardOnFileDashboardBuilder = CardOnFileDashboardBuilder(dependency: component)
     let addPaymentMethodHomeBuilder = AddPaymentMethodBuilder(dependency: component)
+    let topupBuilder = TopupBuilder(dependency: component)
     
     //필요로 하는 정보를 다 생성했다면 (Builder의 역할)
     //해당 정보를 Router로 넘겨준다
@@ -66,7 +72,8 @@ final class FinanceHomeBuilder: Builder<FinanceHomeDependency>, FinanceHomeBuild
       viewController: viewController,
       superPayDashboardBuildable:  superPayDashboardBuilder,
       cardOnFileDashboardBuildable: cardOnFileDashboardBuilder,
-      addPaymentMethodBuildable: addPaymentMethodHomeBuilder
+      addPaymentMethodBuildable: addPaymentMethodHomeBuilder,
+      topupBuildable: topupBuilder
     )
   }
 }

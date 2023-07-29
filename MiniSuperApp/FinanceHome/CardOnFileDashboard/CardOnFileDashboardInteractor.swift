@@ -65,8 +65,8 @@ final class CardOnFileDashboardInteractor: PresentableInteractor<CardOnFileDashb
   
   //전체적인 구조를 고려해 보았을 때, 화면의 일부인 여기서 모달창을 (CarOnFile) 띄우는 것 보다는
   //FinancHome에서 띄우는 것이 적절해 보임 (바로 router에게 요청하지 않겠다는 뜻)
-  func didTapAddPaymentMethod() {
-    listener?.cardOnFileDashboardDidTapAddPaymentMethod()
+  func didTapAddPaymentMethod() {//뷰컨에 요청해서
+    listener?.cardOnFileDashboardDidTapAddPaymentMethod()//
   }
 }
 

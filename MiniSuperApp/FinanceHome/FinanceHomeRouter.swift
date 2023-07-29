@@ -2,7 +2,7 @@ import ModernRIBs
 
 //Router를 이용한 자식 리블렛 연결 4️⃣: 자식 라우터를 생성하기 위해 넣어주는 파라미터로 자식의 리스너가 '나'임을 밝히기 위해
 //'SuperPayDashboardListener' 채택
-protocol FinanceHomeInteractable: Interactable, SuperPayDashboardListener, CardOnFileDashboardListener, AddPaymentMethodListener  {
+protocol FinanceHomeInteractable: Interactable, SuperPayDashboardListener, CardOnFileDashboardListener, AddPaymentMethodListener, TopupListener  {
   var router: FinanceHomeRouting? { get set }
   var listener: FinanceHomeListener? { get set }
   
@@ -19,10 +19,15 @@ final class FinanceHomeRouter: ViewableRouter<FinanceHomeInteractable, FinanceHo
   private let superPayDashboardBuildable: SuperPayDashboardBuildable
   //🚨1️⃣ 똑같은 자식을 두 번 이상 추가해 주지 않도록 방어 로직 추가
   private var superPayRouting: Routing? //자식 라우터를 붙인 뒤 프로퍼티로 들고 있게 만듬
+  
   private let cardOnFileDashboardBuildable: CardOnFileDashboardBuildable
   private var cardOnFileRouting: Routing?
+  
   private let addPaymentMethodBuildable: AddPaymentMethodBuildable
   private var addPaymentMethodRouting: Routing?
+  
+  private let topupBuildable: TopupBuildable
+  private var topupRouting: Routing?
   
 
   //ViewController는 단순 View로 분류, 비즈니스 로직은 Interactor로 들어감
@@ -31,11 +36,13 @@ final class FinanceHomeRouter: ViewableRouter<FinanceHomeInteractable, FinanceHo
     viewController: FinanceHomeViewControllable,
     superPayDashboardBuildable: SuperPayDashboardBuildable,
     cardOnFileDashboardBuildable: CardOnFileDashboardBuildable,
-    addPaymentMethodBuildable: AddPaymentMethodBuildable
+    addPaymentMethodBuildable: AddPaymentMethodBuildable,
+    topupBuildable: TopupBuildable
   ) {
     self.superPayDashboardBuildable = superPayDashboardBuildable
     self.cardOnFileDashboardBuildable = cardOnFileDashboardBuildable
     self.addPaymentMethodBuildable = addPaymentMethodBuildable
+    self.topupBuildable = topupBuildable
     super.init(interactor: interactor, viewController: viewController)
     interactor.router = self
   }
@@ -94,6 +101,25 @@ final class FinanceHomeRouter: ViewableRouter<FinanceHomeInteractable, FinanceHo
     viewControllable.dismiss(completion: nil)
     detachChild(router)
     addPaymentMethodRouting = nil
+  }
+  
+  func attachTopup() {
+    if topupRouting != nil {
+      return
+    }
+    
+    let router = topupBuildable.build(withListener: interactor)
+    topupRouting = router
+    attachChild(router) //뷰가 없는 리불렛으므로 뷰컨트롤러블 프리젠트 해줄 필요 없고 어태치 차일드만 해주면 된다
+  }
+  
+  func detachTopup() {
+    guard let router = topupRouting else {
+      return
+    }
+    
+    detachChild(router)
+    self.topupRouting = nil
   }
 }
 
