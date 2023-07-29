@@ -54,8 +54,7 @@ final class TopupInteractor: Interactor, TopupInteractable, AddPaymentMethodList
   override func willResignActive() {
       super.willResignActive()
 
-      router?.cleanupViews()
-      // TODO: Pause any business logic.
+      router?.cleanupViews()//부모가 detach Child할 때 불리게 됌. 뷰를 전부 지울 책임 
   }
   
   
