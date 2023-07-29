@@ -78,14 +78,20 @@ final class TopupRouter: Router<TopupInteractable>, TopupRouting {
     addPaymentMethodRouting = nil 
   }
   
-  func attachEnterAmount() {
+  func attachEnterAmount() { //두가지 어태치가 존재. 1️⃣카드가 존재해서 최초 present할 때 호출, 2️⃣카드 추가 후 호출
     if enterAmountRouting != nil {
       return
     }
     
     let router = enterAmountBuildable.build(withListener: interactor)
-    presentInsideNavigation(router.viewControllable)
-    attachChild(router)
+    if let navigation = navigationControllable {
+      navigation.setViewControllers([router.viewControllable]) //한 번 날려준다
+      resetChildRouting() //기존의 child를 다 지우고
+    } else {
+      presentInsideNavigation(router.viewControllable)
+    }
+    
+    attachChild(router) //붙인다
     enterAmountRouting = router
   }
   
@@ -135,6 +141,18 @@ final class TopupRouter: Router<TopupInteractable>, TopupRouting {
     
     viewController.dismiss(completion: nil) //내가 직접 dismiss
     self.navigationControllable = nil
+  }
+  
+  private func resetChildRouting() {
+    if let cardOnFileRouting = cardOnFileRouting {
+      detachChild(cardOnFileRouting)
+      self.cardOnFileRouting = nil
+    }
+    
+    if let addPaymentMethodRouting = addPaymentMethodRouting {
+      detachChild(addPaymentMethodRouting)
+      self.addPaymentMethodRouting = nil
+    }
   }
   
 
