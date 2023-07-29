@@ -6,6 +6,7 @@
 //
 
 import ModernRIBs
+import AddPaymentMethod
 
 protocol TopupRouting: Routing {
   func cleanupViews()
@@ -62,7 +63,7 @@ final class TopupInteractor: Interactor, TopupInteractable, AddPaymentMethodList
       router?.attachEnterAmount()
     } else {//카드 추가 화면
       isEnterAmountRoot = false
-      router?.attachAddPaymentMehtod(closeButtonType: .close) //🔥상황에 따른 백버튼 구분 
+      router?.attachAddPaymentMehtod(closeButtonType: .close) //🔥상황에 따른 백버튼 구분
     }
   }
 
