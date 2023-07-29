@@ -12,7 +12,9 @@ let package = Package(
       targets: ["AddPaymentMethod"]),
   ],
   dependencies: [
-    .package(url: "https://github.com/DevYeom/ModernRIBs.git", from: "1.0.1") //ModernRIBs
+    .package(url: "https://github.com/DevYeom/ModernRIBs.git", from: "1.0.1"), //ModernRIBs
+    .package(path: "../Platform")//이 패키지 자체에 추가해주는 의존성
+    //로컬 패키지 같은 경우에는 로컬 경로로 지정해줄 수 있다 (🔥내가 아닌 패키지의 모듈은 여기에🔥)
   ],
   targets: [
       // Targets are the basic building blocks of a package. A target can define a module or a test suite.
