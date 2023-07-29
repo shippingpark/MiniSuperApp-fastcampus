@@ -11,6 +11,8 @@ protocol TopupRouting: Routing {
   func cleanupViews()
   func attachAddPaymentMehtod()
   func detachAddPaymentMehtod()
+  func attachEnterAmount()
+  func detachEnterAmount()
     // TODO: Declare methods the interactor can invoke to manage sub-tree via the router.
 }
 
@@ -45,9 +47,9 @@ final class TopupInteractor: Interactor, TopupInteractable, AddPaymentMethodList
     if dependency.cardOnFileRepository.cardOnFile.value.isEmpty {
       //카드 추가 화면
       router?.attachAddPaymentMehtod()
-    
-    } else {
+    } else {//카드가 있다면
       //금액 입력 확인
+      router?.attachEnterAmount()
     }
   }
 
