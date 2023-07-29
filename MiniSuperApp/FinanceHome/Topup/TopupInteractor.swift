@@ -24,6 +24,7 @@ protocol TopupListener: AnyObject {
 
 protocol TopupInteractorDependency {
   var cardOnFileRepository: CardOnFileRepository { get }
+  var paymentMethodStream: CurrentValuePublisher<PaymentMethod> { get } //값을 직접 쓰기 때문에 readOnly ❌
 }
 
 final class TopupInteractor: Interactor, TopupInteractable, AddPaymentMethodListener, AdaptivePresentationControllerDelegate {
@@ -50,12 +51,13 @@ final class TopupInteractor: Interactor, TopupInteractable, AddPaymentMethodList
   override func didBecomeActive() {
       super.didBecomeActive()
     
-    if dependency.cardOnFileRepository.cardOnFile.value.isEmpty {
-      //카드 추가 화면
-      router?.attachAddPaymentMehtod()
-    } else {//카드가 있다면
+    if let card = dependency.cardOnFileRepository.cardOnFile.value.first { //카드가 있다면
       //금액 입력 확인
+      dependency.paymentMethodStream.send(card) //스트림에 첫번째 카드 값을 보냄 //여기서 흘린 스트림을 EnterAmount가 읽어서 화면에 표시해야 함
       router?.attachEnterAmount()
+    } else {//카드 추가 화면
+      
+      router?.attachAddPaymentMehtod()
     }
   }
 
