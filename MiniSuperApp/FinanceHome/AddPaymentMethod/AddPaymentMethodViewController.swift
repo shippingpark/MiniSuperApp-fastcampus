@@ -86,7 +86,7 @@ final class AddPaymentMethodViewController: UIViewController, AddPaymentMethodPr
     title = "카드추가"
     view.backgroundColor = .backgroundColor
     
-    setupNavigationItem(target: self, action: #selector(didTapClose))
+    setupNavigationItem(with: .back, target: self, action: #selector(didTapClose))
     
     view.addSubview(cardNumberTextField)
     view.addSubview(stackView)

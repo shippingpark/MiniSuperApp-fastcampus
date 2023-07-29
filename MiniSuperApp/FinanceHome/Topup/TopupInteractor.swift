@@ -13,6 +13,8 @@ protocol TopupRouting: Routing {
   func detachAddPaymentMehtod()
   func attachEnterAmount()
   func detachEnterAmount()
+  func attachCardOnFile(paymentMethods: [PaymentMethod])
+  func detachCardOnFile()
     // TODO: Declare methods the interactor can invoke to manage sub-tree via the router.
 }
 
@@ -28,7 +30,11 @@ final class TopupInteractor: Interactor, TopupInteractable, AddPaymentMethodList
 
   weak var router: TopupRouting?
   weak var listener: TopupListener?
-  let presentationDelegateProxy: AdaptivePresentationControllerDelegateProxy//🍯
+  let presentationDelegateProxy: AdaptivePresentationControllerDelegateProxy //🍯
+  
+  private var paymentMethods: [PaymentMethod] { //🍯 간결하게 표현하기 위한
+    dependency.cardOnFileRepository.cardOnFile.value
+  }
   
   private let dependency: TopupInteractorDependency
   
@@ -77,6 +83,16 @@ final class TopupInteractor: Interactor, TopupInteractable, AddPaymentMethodList
     router?.detachEnterAmount()//일단 해당 리블렛 디태치
     listener?.topupDidClose() //리스너에게 우리 끝났다고도 알려줌 (리스너가 topup(self) 디태치 할 수 있도록)
   }
+  
+  func enterAmountDidTapPaymentMethod() { //🍯이렇게 너무 길어질 때는 computedProperty를 선언함으로 간결하게 작성할 수 있음
+//    router?.attachCardOnFile(paumentMethods: self.dependency.cardOnFileRepository.cardOnFile.value) //이때 PaymentMethodArray를 넘겨주면 딱 좋을 것 같음
+    router?.attachCardOnFile(paymentMethods: paymentMethods)
+    
+  }
+  
+  func cardOnFileDidTapClose() {
+    router?.detachCardOnFile()
+  }
 }
 
 // MARK: - 뷰가 있는 리블렛과 없는 리블렛의 차이
@@ -85,4 +101,9 @@ final class TopupInteractor: Interactor, TopupInteractable, AddPaymentMethodList
 //2️⃣뷰가 없는 리블렛
 //부모 리블렛이 present해 준 뷰가 없기 때문에 직접 dismiss 하지 않는다
 //자신이 끝났을 때, 본인이 올린 화면을 본인이 직접 다 닫을 책임이 있다
+
+
+
+// MARK: - 카드 선택화면에서, 카드 종류 화면과 카드 선택화면은 서로를 몰라야 한다
+//따라서 데이터 값을 가져오는 것은 부모인 Topup 리블렛이 수행하는 것이 옳다
 

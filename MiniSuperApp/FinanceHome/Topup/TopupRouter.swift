@@ -7,7 +7,7 @@
 
 import ModernRIBs
 
-protocol TopupInteractable: Interactable, AddPaymentMethodListener, EnterAmountListener {
+protocol TopupInteractable: Interactable, AddPaymentMethodListener, EnterAmountListener, CardOnFileListener {
     var router: TopupRouting? { get set }
     var listener: TopupListener? { get set }
   var presentationDelegateProxy: AdaptivePresentationControllerDelegateProxy { get }
@@ -28,16 +28,21 @@ final class TopupRouter: Router<TopupInteractable>, TopupRouting {
   
   private let enterAmountBuildable: EnterAmountBuildable
   private var enterAmountRouting: Routing?
+  
+  private let cardOnFileBuildable: CardOnFileBuildable
+  private var cardOnFileRouting: Routing?
 
     // TODO: Constructor inject child builder protocols to allow building children.
   init(interactor: TopupInteractable,
        viewController: ViewControllable,
        addPaymentMethodBuildable: AddPaymentMethodBuildable,
-       enterAmountBuildable: EnterAmountBuildable
+       enterAmountBuildable: EnterAmountBuildable,
+       cardOnFileBuildable: CardOnFileBuildable
   ) {
     self.viewController = viewController
     self.addPaymentMethodBuildable = addPaymentMethodBuildable
     self.enterAmountBuildable = enterAmountBuildable
+    self.cardOnFileBuildable = cardOnFileBuildable
     super.init(interactor: interactor)
     interactor.router = self
   }
@@ -92,6 +97,27 @@ final class TopupRouter: Router<TopupInteractable>, TopupRouting {
     dismissPresentedNavigation(completion: nil)
     detachChild(router)
     enterAmountRouting = nil
+  }
+  
+  func attachCardOnFile(paymentMethods: [PaymentMethod]) {
+    if cardOnFileRouting != nil {
+      return
+    }
+    
+    let router = cardOnFileBuildable.build(withListener: interactor, paymentMethods: paymentMethods) //🔥생성하기 위해 넣어줘야 할 값은 build 메서드 호출 시점에 파라미터로 전달해주면 된다
+    navigationControllable?.pushViewController(router.viewControllable, animated: true)
+    cardOnFileRouting = router
+    attachChild(router)
+  }
+  
+  func detachCardOnFile() {
+    guard let router = cardOnFileRouting else {
+      return
+    }
+    
+    navigationControllable?.popViewController(animated: true)
+    detachChild(router)
+    cardOnFileRouting = nil
   }
   
   //네비게이션으로 화면을 띄우는 헬퍼 메소드
