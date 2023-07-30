@@ -1,4 +1,5 @@
 import UIKit
+import FinanceEntity
 
 struct SelectedPaymentMethodViewModel {
   let image: UIImage?

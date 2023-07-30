@@ -6,13 +6,14 @@
 //
 
 import ModernRIBs
+import FinanceEntity
 
 protocol CardOnFileRouting: ViewableRouting {
     // TODO: Declare methods the interactor can invoke to manage sub-tree via the router.
 }
 
 protocol CardOnFilePresentable: Presentable {
-    var listener: CardOnFilePresentableListener? { get set }
+  var listener: CardOnFilePresentableListener? { get set }
   func update(with viewModels: [PaymentMethodViewModel])
 }
 

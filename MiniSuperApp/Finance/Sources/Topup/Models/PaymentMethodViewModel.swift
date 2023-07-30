@@ -1,8 +1,8 @@
 //
-//  PaymentMethodViewModel.swift
-//  MiniSuperApp
+//  File.swift
+//  
 //
-//  Created by 박혜운 on 2023/07/25.
+//  Created by 박혜운 on 2023/07/30.
 //
 
 import UIKit
@@ -20,6 +20,6 @@ struct PaymentMethodViewModel {
   init(_ paymentMethod: PaymentMethod) {
     name = paymentMethod.name
     digits = "**** \(paymentMethod.digits)"
-    color = UIColor(hex: paymentMethod.color) ?? .systemGray //변환이 실패했을 경우 반환할 
+    color = UIColor(hex: paymentMethod.color) ?? .systemGray //변환이 실패했을 경우 반환할
   }
 }

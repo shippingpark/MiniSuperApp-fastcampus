@@ -7,6 +7,11 @@
 
 import ModernRIBs
 import AddPaymentMethod
+import RIBsUtil
+import FinanceRepository
+import FinanceEntity
+import SuperUI
+import CombineUtil
 
 protocol TopupRouting: Routing {
   func cleanupViews()
@@ -20,7 +25,7 @@ protocol TopupRouting: Routing {
     // TODO: Declare methods the interactor can invoke to manage sub-tree via the router.
 }
 
-protocol TopupListener: AnyObject {
+public protocol TopupListener: AnyObject {
     func topupDidClose()
   func topupDidFinish()
 }
