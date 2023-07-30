@@ -28,7 +28,7 @@ let package = Package(
           .product(name: "Topup", package: "Finance"),//🔥로컬 라이브러리 의존🔥
         ],
         resources: [
-//          .process("Resources"), // Resources 폴더를 리소스로 추가
+          .process("Resources"), // Resources 폴더를 리소스로 추가
         ]
     ),
   ]
