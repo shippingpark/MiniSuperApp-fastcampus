@@ -21,7 +21,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     return true
   }
-  
 }
 
 protocol URLHandler: AnyObject {
