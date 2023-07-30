@@ -7,21 +7,28 @@ let package = Package(
   name: "Transport",
   platforms: [.iOS(.v14)], //플랫폼도 버전을 맞춰줘야 한다
   products: [
+    
     .library(
         name: "TransportHome",
         targets: ["TransportHome"]),
   ],
   
   dependencies: [
+    .package(url: "https://github.com/DevYeom/ModernRIBs.git", from: "1.0.1"),
+    .package(path: "../Finance"),
   ],
   
   targets: [
+    
     .target(
         name: "TransportHome",
         dependencies: [
+          "ModernRIBs",
+          .product(name: "FinanceRepository", package: "Finance"),//🔥로컬 라이브러리 의존🔥
+          .product(name: "Topup", package: "Finance"),//🔥로컬 라이브러리 의존🔥
         ],
-        resources: [ //🔥리소스 추가하는 법
-          .process("Resources"),
+        resources: [
+//          .process("Resources"), // Resources 폴더를 리소스로 추가
         ]
     ),
   ]

@@ -5,24 +5,27 @@ import PackageDescription
 
 let package = Package(
     name: "CX",
+    platforms: [.iOS(.v14)], //플랫폼도 버전을 맞춰줘야 한다
     products: [
-        // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
-            name: "CX",
-            targets: ["CX"]),
+            name: "AppHome",
+            targets: ["AppHome"]
+        ),
     ],
     dependencies: [
-        // Dependencies declare other packages that this package depends on.
-        // .package(url: /* package url */, from: "1.0.0"),
+      .package(url: "https://github.com/DevYeom/ModernRIBs.git", from: "1.0.1"),
+      .package(path: "../Finance"),
+      .package(path: "../Transport")
     ],
     targets: [
-        // Targets are the basic building blocks of a package. A target can define a module or a test suite.
-        // Targets can depend on other targets in this package, and on products in packages this package depends on.
+        
         .target(
-            name: "CX",
-            dependencies: []),
-        .testTarget(
-            name: "CXTests",
-            dependencies: ["CX"]),
+            name: "AppHome",
+            dependencies: [
+              "ModernRIBs",
+              .product(name: "FinanceRepository", package: "Finance"),//🔥로컬 라이브러리 의존🔥
+              .product(name: "TransportHome", package: "Transport"),//🔥로컬 라이브러리 의존🔥
+            ]
+        ),
     ]
 )
