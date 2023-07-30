@@ -16,7 +16,7 @@ protocol FinanceHomePresentable: Presentable {
   var listener: FinanceHomePresentableListener? { get set }
 }
 
-protocol FinanceHomeListener: AnyObject {
+public protocol FinanceHomeListener: AnyObject {
   // TODO: Declare methods the interactor can invoke to communicate with other RIBs.
 }
 

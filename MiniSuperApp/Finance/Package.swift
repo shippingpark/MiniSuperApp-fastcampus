@@ -15,6 +15,10 @@ let package = Package(
         name: "Topup",
         targets: ["Topup"]),
     
+      .library(
+        name: "FinanceHome",
+        targets: ["FinanceHome"]),
+    
     .library( //새로운 라이브러리
       name: "FinanceEntity",
       targets: ["FinanceEntity"]),
@@ -52,6 +56,18 @@ let package = Package(
         .product(name: "SuperUI", package: "Platform")//🔥로컬 라이브러리 의존🔥
       ]
     ),
+    
+      .target(
+        name: "FinanceHome",
+        dependencies: [
+          "ModernRIBs",
+          "FinanceEntity",
+          "FinanceRepository",
+          "AddPaymentMethod",
+          .product(name: "RIBsUtil", package: "Platform"),//🔥로컬 라이브러리 의존🔥
+          .product(name: "SuperUI", package: "Platform")//🔥로컬 라이브러리 의존🔥
+        ]
+      ),
     
     .target(
       name: "FinanceEntity", //추가 이후에 이름으로 내부 모듈에 적용 가능

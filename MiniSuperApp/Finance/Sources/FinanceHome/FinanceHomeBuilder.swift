@@ -4,7 +4,7 @@ import FinanceRepository
 import AddPaymentMethod
 import CombineUtil
 
-protocol FinanceHomeDependency: Dependency {
+public protocol FinanceHomeDependency: Dependency {
   var cardOnFileRepository: CardOnFileRepository { get } //부모에게 주입 받자
   var superPayRepository: SuperPayRepository { get }
 }
@@ -30,19 +30,19 @@ final class FinanceHomeComponent: Component<FinanceHomeDependency>, SuperPayDash
 
 // MARK: - Builder
 
-protocol FinanceHomeBuildable: Buildable {
-  func build(withListener listener: FinanceHomeListener) -> FinanceHomeRouting
+public protocol FinanceHomeBuildable: Buildable {
+  func build(withListener listener: FinanceHomeListener) -> ViewableRouting
 }
 
 //Builder는 Buildable이라는 인터페이스를 받고 있다
 //라우터에서는 Buildable 프로토콜 타입으로 받는다
-final class FinanceHomeBuilder: Builder<FinanceHomeDependency>, FinanceHomeBuildable {
+public final class FinanceHomeBuilder: Builder<FinanceHomeDependency>, FinanceHomeBuildable {
   
-  override init(dependency: FinanceHomeDependency) {
+  public override init(dependency: FinanceHomeDependency) {
     super.init(dependency: dependency)
   }
   
-  func build(withListener listener: FinanceHomeListener) -> FinanceHomeRouting {
+  public func build(withListener listener: FinanceHomeListener) -> ViewableRouting {
     //Finance는 금융 관련 기능의 첫 시작이므로 여기서 balance(잔여 금액) 시작하는 게 좋아 보임
     let balancePublisher = CurrentValuePublisher<Double>(10000)
     let viewController = FinanceHomeViewController()

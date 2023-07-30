@@ -1,5 +1,6 @@
-import ModernRIBs
 import UIKit
+import ModernRIBs
+import FinanceHome
 import FinanceRepository
 
 protocol AppRootDependency: Dependency {
