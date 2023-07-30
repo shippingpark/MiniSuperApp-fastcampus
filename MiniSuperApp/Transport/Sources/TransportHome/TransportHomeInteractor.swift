@@ -15,7 +15,7 @@ protocol TransportHomePresentable: Presentable {
   
 }
 
-protocol TransportHomeListener: AnyObject {
+public protocol TransportHomeListener: AnyObject {
   func transportHomeDidTapClose()
 }
 
