@@ -1,4 +1,5 @@
 import ModernRIBs
+import TransportHome
 import Combine
 import Foundation
 import CombineUtil
@@ -13,10 +14,6 @@ protocol TransportHomePresentable: Presentable {
   
   func setSuperPayBalance( _ balance: String)
   
-}
-
-public protocol TransportHomeListener: AnyObject {
-  func transportHomeDidTapClose()
 }
 
 protocol TransportHomeInteractorDependency {

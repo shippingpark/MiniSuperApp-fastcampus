@@ -11,6 +11,10 @@ let package = Package(
     .library(
         name: "TransportHome",
         targets: ["TransportHome"]),
+    
+      .library(
+          name: "TransportHomeImp",
+          targets: ["TransportHomeImp"]),
   ],
   
   dependencies: [
@@ -24,6 +28,14 @@ let package = Package(
         name: "TransportHome",
         dependencies: [
           "ModernRIBs",
+        ]
+    ),
+    
+    .target(
+        name: "TransportHomeImp",
+        dependencies: [
+          "ModernRIBs",
+          "TransportHome",
           .product(name: "FinanceRepository", package: "Finance"),//🔥로컬 라이브러리 의존🔥
           .product(name: "Topup", package: "Finance"),//🔥로컬 라이브러리 의존🔥
         ],

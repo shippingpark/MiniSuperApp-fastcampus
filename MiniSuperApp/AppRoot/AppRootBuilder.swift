@@ -10,23 +10,7 @@ protocol AppRootDependency: Dependency {
   // created by this RIB.
 }
 
-final class AppRootComponent: Component<AppRootDependency>, AppHomeDependency, FinanceHomeDependency, ProfileHomeDependency  {
-  var cardOnFileRepository: CardOnFileRepository
-  var superPayRepository: SuperPayRepository
-  
-  init(
-    dependency: AppRootDependency,
-    cardOnFileRepository: CardOnFileRepository,
-    superPayRepository: SuperPayRepository
-  ) {
-    self.cardOnFileRepository = cardOnFileRepository
-    self.superPayRepository = superPayRepository
-    super.init(dependency: dependency)
-  }
-  
-  
-  // TODO: Declare 'fileprivate' dependencies that are only used by this RIB.
-}
+//AppRootCompoent 있던 자리 
 
 // MARK: - Builder
 

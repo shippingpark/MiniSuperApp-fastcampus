@@ -15,7 +15,8 @@ let package = Package(
     dependencies: [
       .package(url: "https://github.com/DevYeom/ModernRIBs.git", from: "1.0.1"),
       .package(path: "../Finance"),
-      .package(path: "../Transport")
+      .package(path: "../Transport"),
+      .package(path: "../Platform")
     ],
     targets: [
         
@@ -25,6 +26,7 @@ let package = Package(
               "ModernRIBs",
               .product(name: "FinanceRepository", package: "Finance"),//🔥로컬 라이브러리 의존🔥
               .product(name: "TransportHome", package: "Transport"),//🔥로컬 라이브러리 의존🔥
+              .product(name: "SuperUI", package: "Platform")//🔥로컬 라이브러리 의존🔥
             ]
         ),
     ]
