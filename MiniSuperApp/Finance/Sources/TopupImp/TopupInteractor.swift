@@ -12,6 +12,7 @@ import FinanceRepository
 import FinanceEntity
 import SuperUI
 import CombineUtil
+import Topup
 
 protocol TopupRouting: Routing {
   func cleanupViews()
@@ -23,11 +24,6 @@ protocol TopupRouting: Routing {
   func detachCardOnFile()
   func popToRoot()
     // TODO: Declare methods the interactor can invoke to manage sub-tree via the router.
-}
-
-public protocol TopupListener: AnyObject {
-    func topupDidClose()
-  func topupDidFinish()
 }
 
 protocol TopupInteractorDependency {

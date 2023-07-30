@@ -20,6 +20,8 @@ protocol AppRootBuildable: Buildable {
 
 final class AppRootBuilder: Builder<AppRootDependency>, AppRootBuildable {
   
+  let tabBar = RootTabBarController()
+  
   override init(dependency: AppRootDependency) {
     super.init(dependency: dependency)
   }
@@ -28,10 +30,9 @@ final class AppRootBuilder: Builder<AppRootDependency>, AppRootBuildable {
     let component = AppRootComponent(
       dependency: dependency,
       cardOnFileRepository: CardOnFileRepositoryImp(),
-      superPayRepository:  SuperPayRepositoryImp()
+      superPayRepository:  SuperPayRepositoryImp(),
+      rootViewController: tabBar
     )
-    
-    let tabBar = RootTabBarController()
     
     let interactor = AppRootInteractor(presenter: tabBar)
   

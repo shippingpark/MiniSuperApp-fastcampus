@@ -16,6 +16,10 @@ let package = Package(
         targets: ["Topup"]),
     
       .library(
+        name: "TopupImp",
+        targets: ["TopupImp"]),
+    
+      .library(
         name: "FinanceHome",
         targets: ["FinanceHome"]),
     
@@ -45,10 +49,18 @@ let package = Package(
       ]
     ),
     
+      .target(
+        name: "Topup",
+        dependencies: [
+          "ModernRIBs",
+        ]
+      ),
+    
     .target(
-      name: "Topup",
+      name: "TopupImp",
       dependencies: [
         "ModernRIBs",
+        "Topup", //interface에 의존 
         "FinanceEntity",
         "FinanceRepository",
         "AddPaymentMethod",

@@ -70,4 +70,14 @@ public extension ViewControllable {
       self.uiviewController.navigationController?.setViewControllers(viewControllerables.map(\.uiviewController), animated: true)
     }
   }
+  
+  var topViewControllable: ViewControllable { //현재 화면에서 가장 최상단 뷰컨 가져오는 함수
+    var top: ViewControllable = self
+    
+    while let presented = top.uiviewController.presentedViewController as? ViewControllable {
+      top = presented
+    } //재귀적으로 가장 최상단 뷰컨을 찾는 찾는 
+    
+    return top
+  }
 }

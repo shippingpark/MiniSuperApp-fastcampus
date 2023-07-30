@@ -10,6 +10,7 @@ import FinanceRepository
 import CombineUtil
 import FinanceEntity
 import AddPaymentMethod
+import Topup
 
 //topup 리불렛을 이용하여 view를 띄울 때, topup리불렛이 뷰컨을 소유하고 있는 것이 아니라, 부모가 지정해준 뷰컨을 사용하게 됨 
 
@@ -40,10 +41,6 @@ final class TopupComponent: Component<TopupDependency>, TopupInteractorDependenc
 }
 
 // MARK: - Builder
-
-public protocol TopupBuildable: Buildable {
-  func build(withListener listener: TopupListener) -> Routing
-}
 
 public final class TopupBuilder: Builder<TopupDependency>, TopupBuildable {
 

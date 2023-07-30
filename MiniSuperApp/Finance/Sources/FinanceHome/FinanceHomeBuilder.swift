@@ -7,25 +7,27 @@ import CombineUtil
 public protocol FinanceHomeDependency: Dependency {
   var cardOnFileRepository: CardOnFileRepository { get } //부모에게 주입 받자
   var superPayRepository: SuperPayRepository { get }
+  var topupBuildable: TopupBuildable { get }
 }
 
 //컴포넌트가 (자식에게 필요로한 정보) SuperPayDashboard를 confirm 하도록 채택
 //컴포넌트 : 리불렛이 필요로 하는 정보들을 담는 객체 (자식 리불렛이 필요로 하는 것들 포함)
 //자식들의 디펜던시를 부모 컴포넌트가 confirm 하도록 함
 //🍯 타입 캐스팅을 통한 자식 리블렛 데이터 접근 제한 
-final class FinanceHomeComponent: Component<FinanceHomeDependency>, SuperPayDashboardDependency, CardOnFileDashboardDependency, AddPaymentMethodDependency, TopupDependency {
+final class FinanceHomeComponent: Component<FinanceHomeDependency>, SuperPayDashboardDependency, CardOnFileDashboardDependency, AddPaymentMethodDependency {
   var cardOnFileRepository: CardOnFileRepository { dependency.cardOnFileRepository }
   var superPayRepository: SuperPayRepository { dependency.superPayRepository }
   var balance: ReadOnlyCurrentValuePublisher<Double> { superPayRepository.balance } //자식에게는 ReadOnly
-  var topupBaseViewController: ViewControllable
+//  var topupBaseViewController: ViewControllable
+  var topupBuildable: TopupBuildable { dependency.topupBuildable }
   
-  init(
-    dependency: FinanceHomeDependency,
-    topupBaseViewController: ViewControllable
-  ) {
-    self.topupBaseViewController = topupBaseViewController
-    super.init(dependency: dependency)
-  }
+//  override init(
+//    dependency: FinanceHomeDependency
+//    topupBaseViewController: ViewControllable
+//  ) {
+//    self.topupBaseViewController = topupBaseViewController
+//    super.init(dependency: dependency)
+//  }
 }
 
 // MARK: - Builder
@@ -48,8 +50,8 @@ public final class FinanceHomeBuilder: Builder<FinanceHomeDependency>, FinanceHo
     let viewController = FinanceHomeViewController()
     
     let component = FinanceHomeComponent(
-      dependency: dependency,
-      topupBaseViewController: viewController//자식에게 내 뷰컨을 넘겨줌 
+      dependency: dependency
+//      topupBaseViewController: viewController//자식에게 내 뷰컨을 넘겨줌
     )
     
     
@@ -60,7 +62,7 @@ public final class FinanceHomeBuilder: Builder<FinanceHomeDependency>, FinanceHo
     let superPayDashboardBuilder = SuperPayDashboardBuilder(dependency: component)
     let cardOnFileDashboardBuilder = CardOnFileDashboardBuilder(dependency: component)
     let addPaymentMethodHomeBuilder = AddPaymentMethodBuilder(dependency: component)
-    let topupBuilder = TopupBuilder(dependency: component)
+    //let topupBuilder = TopupBuilder(dependency: component) //🔥의존성 제거
     
     //필요로 하는 정보를 다 생성했다면 (Builder의 역할)
     //해당 정보를 Router로 넘겨준다
@@ -70,7 +72,7 @@ public final class FinanceHomeBuilder: Builder<FinanceHomeDependency>, FinanceHo
       superPayDashboardBuildable:  superPayDashboardBuilder,
       cardOnFileDashboardBuildable: cardOnFileDashboardBuilder,
       addPaymentMethodBuildable: addPaymentMethodHomeBuilder,
-      topupBuildable: topupBuilder
+      topupBuildable: component.topupBuildable
     )
   }
 }

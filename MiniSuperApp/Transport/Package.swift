@@ -20,6 +20,7 @@ let package = Package(
   dependencies: [
     .package(url: "https://github.com/DevYeom/ModernRIBs.git", from: "1.0.1"),
     .package(path: "../Finance"),
+    .package(path: "../Platform"),
   ],
   
   targets: [
@@ -38,6 +39,7 @@ let package = Package(
           "TransportHome",
           .product(name: "FinanceRepository", package: "Finance"),//🔥로컬 라이브러리 의존🔥
           .product(name: "Topup", package: "Finance"),//🔥로컬 라이브러리 의존🔥
+          .product(name: "SuperUI", package: "Platform"),//🔥로컬 라이브러리 의존🔥
         ],
         resources: [
           .process("Resources"), // Resources 폴더를 리소스로 추가

@@ -1,4 +1,5 @@
 import UIKit
+import SuperUI
 
 final class SuperPayView: UIView {
   
