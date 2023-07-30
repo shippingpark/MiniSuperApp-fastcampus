@@ -1,6 +1,6 @@
 import UIKit
 
-extension UIView {
+public extension UIView {
   func addShadowWithRoundedCorners(
     _ radius: CGFloat = 16,
     shadowColor: CGColor = UIColor.black.cgColor,

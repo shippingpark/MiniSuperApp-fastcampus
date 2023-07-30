@@ -11,6 +11,7 @@ let package = Package(
       name: "AddPaymentMethod",
       targets: ["AddPaymentMethod"]),
     
+    
     .library( //새로운 라이브러리
       name: "FinanceEntity",
       targets: ["FinanceEntity"]),
@@ -30,9 +31,15 @@ let package = Package(
       name: "AddPaymentMethod",
       dependencies: [
         "ModernRIBs",
-        "FinanceEntity" //이 패키지 내에서 해당 라이브러리를 사용해야 하므로 디펜던시에 추가해준다 
+        "FinanceEntity", //이 패키지 내에서 해당 라이브러리를 사용해야 하므로 디펜던시에 추가해준다
+        "FinanceRepository",
+        .product(name: "RIBsUtil", package: "Platform"),//🔥로컬 라이브러리 의존🔥
+        .product(name: "SuperUI", package: "Platform")//🔥로컬 라이브러리 의존🔥
       ]
     ),
+      ]
+    ),
+    
     .target(
       name: "FinanceEntity", //추가 이후에 이름으로 내부 모듈에 적용 가능
       dependencies: [
@@ -41,8 +48,8 @@ let package = Package(
     .target(
       name: "FinanceRepository",
       dependencies: [
-        "FinanceEntity",
-        .product(name: "CombineUtil", package: "Platform")
+        "FinanceEntity", //🔥패키지 내부 라이브러리 의존🔥
+        .product(name: "CombineUtil", package: "Platform")//🔥로컬 라이브러리 의존🔥
       ]
     )
   ]

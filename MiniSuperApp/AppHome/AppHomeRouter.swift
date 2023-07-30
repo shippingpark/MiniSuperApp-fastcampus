@@ -1,4 +1,5 @@
 import ModernRIBs
+import SuperUI
 
 
 protocol AppHomeInteractable: Interactable, TransportHomeListener {

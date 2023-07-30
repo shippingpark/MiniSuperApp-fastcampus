@@ -7,6 +7,8 @@
 
 import ModernRIBs
 import UIKit
+import RIBsUtil
+import SuperUI
 
 protocol AddPaymentMethodPresentableListener: AnyObject {
     func didTapClose()
@@ -48,7 +50,7 @@ final class AddPaymentMethodViewController: UIViewController, AddPaymentMethodPr
   private let addCardButton: UIButton = {
     let button = UIButton()
     button.translatesAutoresizingMaskIntoConstraints = false
-    button.roundCorners()
+    button.roundCorners() //UI관련 Util을 생성해야겠군 
     button.backgroundColor = .primaryRed
     button.setTitle("추가하기", for: .normal)
     button.addTarget(self, action: #selector(didTapAddCard), for: .touchUpInside)
