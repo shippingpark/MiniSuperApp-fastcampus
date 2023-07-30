@@ -15,6 +15,7 @@
 		CE37B94F2A76018100253095 /* Topup in Frameworks */ = {isa = PBXBuildFile; productRef = CE37B94E2A76018100253095 /* Topup */; };
 		CE37B9512A760DA800253095 /* FinanceHome in Frameworks */ = {isa = PBXBuildFile; productRef = CE37B9502A760DA800253095 /* FinanceHome */; };
 		CE37B9552A7610C800253095 /* TransportHome in Frameworks */ = {isa = PBXBuildFile; productRef = CE37B9542A7610C800253095 /* TransportHome */; };
+		CE37B9572A76130900253095 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE37B9562A76130900253095 /* Assets.xcassets */; };
 		CE684FB22A756994001EA3C5 /* AddPaymentMethod in Frameworks */ = {isa = PBXBuildFile; productRef = CE684FB12A756994001EA3C5 /* AddPaymentMethod */; };
 		CEAB88F12A6E5DB700E9FD69 /* CombineExt in Frameworks */ = {isa = PBXBuildFile; productRef = CEAB88F02A6E5DB700E9FD69 /* CombineExt */; };
 		F57EBE552738468700FE9319 /* Array+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57EBE522738468700FE9319 /* Array+Utils.swift */; };
@@ -24,7 +25,6 @@
 		F57F6AF326DB4A2D00C0117D /* ProfileHomeInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57F6AEF26DB4A2D00C0117D /* ProfileHomeInteractor.swift */; };
 		F57F6AFE26DB4CD700C0117D /* RootTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F57F6AFD26DB4CD700C0117D /* RootTabBarController.swift */; };
 		F5829F5926DB2BC400BFA8CD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5829F5826DB2BC400BFA8CD /* AppDelegate.swift */; };
-		F5829F6226DB2BC500BFA8CD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F5829F6126DB2BC500BFA8CD /* Assets.xcassets */; };
 		F5829F6526DB2BC500BFA8CD /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F5829F6326DB2BC500BFA8CD /* LaunchScreen.storyboard */; };
 		F5829F6E26DB2DE900BFA8CD /* ModernRIBs in Frameworks */ = {isa = PBXBuildFile; productRef = F5829F6D26DB2DE900BFA8CD /* ModernRIBs */; };
 		F5829F7426DB34AA00BFA8CD /* AppRootRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F5829F7026DB34AA00BFA8CD /* AppRootRouter.swift */; };
@@ -40,6 +40,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		CE37B9562A76130900253095 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CE684FAB2A75621D001EA3C5 /* CX */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = CX; path = MiniSuperApp/CX; sourceTree = "<group>"; };
 		CE684FAC2A756239001EA3C5 /* Finance */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Finance; path = MiniSuperApp/Finance; sourceTree = "<group>"; };
 		CE684FAD2A756251001EA3C5 /* Transport */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = Transport; path = MiniSuperApp/Transport; sourceTree = "<group>"; };
@@ -53,7 +54,6 @@
 		F57F6AFD26DB4CD700C0117D /* RootTabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootTabBarController.swift; sourceTree = "<group>"; };
 		F5829F5526DB2BC400BFA8CD /* MiniSuperApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MiniSuperApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F5829F5826DB2BC400BFA8CD /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		F5829F6126DB2BC500BFA8CD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F5829F6426DB2BC500BFA8CD /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F5829F6626DB2BC500BFA8CD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F5829F7026DB34AA00BFA8CD /* AppRootRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppRootRouter.swift; sourceTree = "<group>"; };
@@ -159,9 +159,9 @@
 				F57F6AD926DB49E500C0117D /* AppHome */,
 				F57F6ADB26DB49FD00C0117D /* ProfileHome */,
 				F57F6AFF26DB585100C0117D /* Utils */,
-				F5829F6126DB2BC500BFA8CD /* Assets.xcassets */,
 				F5829F6326DB2BC500BFA8CD /* LaunchScreen.storyboard */,
 				F5829F6626DB2BC500BFA8CD /* Info.plist */,
+				CE37B9562A76130900253095 /* Assets.xcassets */,
 			);
 			path = MiniSuperApp;
 			sourceTree = "<group>";
@@ -268,8 +268,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CE37B9572A76130900253095 /* Assets.xcassets in Resources */,
 				F5829F6526DB2BC500BFA8CD /* LaunchScreen.storyboard in Resources */,
-				F5829F6226DB2BC500BFA8CD /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
