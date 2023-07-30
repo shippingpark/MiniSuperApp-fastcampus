@@ -15,9 +15,11 @@ import TransportHome //빌더블 있는 위치
 import TransportHomeImp
 import Topup
 import TopupImp
+import AddPaymentMethod
+import AddPaymentMethodImp
 
-final class AppRootComponent: Component<AppRootDependency>, AppHomeDependency, FinanceHomeDependency, ProfileHomeDependency, TransportHomeDependency, TopupDependency  {
-  
+final class AppRootComponent: Component<AppRootDependency>, AppHomeDependency, FinanceHomeDependency, ProfileHomeDependency, TransportHomeDependency, TopupDependency, AddPaymentMethodDependency  {
+
   //부모에게 생성을 미뤘기 때문에, 여기서 생성자 넣어달라는 에러발생🍷
   
   var cardOnFileRepository: CardOnFileRepository
@@ -29,6 +31,10 @@ final class AppRootComponent: Component<AppRootDependency>, AppHomeDependency, F
   
   lazy var topupBuildable: TopupBuildable = {
     return TopupBuilder(dependency: self) // 🍷
+  }()
+  
+  lazy var addPaymentMethodBuildable: AddPaymentMethodBuildable = {
+    return AddPaymentMethodBuilder(dependency: self) // 🍷
   }()
   
   var topupBaseViewController: ViewControllable { rootViewController.topViewControllable } //그 최상단을 받는다
@@ -46,7 +52,4 @@ final class AppRootComponent: Component<AppRootDependency>, AppHomeDependency, F
     self.rootViewController = rootViewController
     super.init(dependency: dependency)
   }
-  
-  
-  // TODO: Declare 'fileprivate' dependencies that are only used by this RIB.
 } //앱의 최초 실행점에 해당, 앞으로 점점 커질 것 같기 때문에 별도의 파일로 분리

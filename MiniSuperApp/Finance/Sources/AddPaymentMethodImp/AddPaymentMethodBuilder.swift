@@ -8,6 +8,7 @@
 import ModernRIBs
 import FinanceRepository
 import RIBsUtil
+import AddPaymentMethod
 
 public protocol AddPaymentMethodDependency: Dependency {
   var cardOnFileRepository: CardOnFileRepository { get }
@@ -20,9 +21,9 @@ final class AddPaymentMethodComponent: Component<AddPaymentMethodDependency>, Ad
 
 // MARK: - Builder
 
-public protocol AddPaymentMethodBuildable: Buildable {
-    func build(withListener listener: AddPaymentMethodListener, closeButtonType: DismissButtonType) -> ViewableRouting
-}
+//public protocol AddPaymentMethodBuildable: Buildable {
+//    func build(withListener listener: AddPaymentMethodListener, closeButtonType: DismissButtonType) -> ViewableRouting
+//}
 //까다로운 문제💦 프로토콜이 Public이므로 AddPaymentMethodRouting 프로토콜도 Public이어야 함
 //그러나 AddPaymentMethodRouting에는 아무런 메서드가 없음
 //그래서 AddPaymentMethodRouting 자체를 없애고 리턴 타입을 ViewableRouting로 바꾸어 줌

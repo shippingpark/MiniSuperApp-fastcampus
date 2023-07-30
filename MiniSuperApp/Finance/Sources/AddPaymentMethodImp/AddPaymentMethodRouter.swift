@@ -6,6 +6,8 @@
 //
 
 import ModernRIBs
+import AddPaymentMethod
+
 
 protocol AddPaymentMethodInteractable: Interactable {
     var router: AddPaymentMethodRouting? { get set }

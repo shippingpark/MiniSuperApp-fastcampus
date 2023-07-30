@@ -9,6 +9,7 @@ import ModernRIBs
 import Combine
 import FinanceEntity
 import FinanceRepository
+import AddPaymentMethod
 
 protocol AddPaymentMethodRouting: ViewableRouting {
     // TODO: Declare methods the interactor can invoke to manage sub-tree via the router.
@@ -19,10 +20,10 @@ protocol AddPaymentMethodPresentable: Presentable {
     // TODO: Declare methods the interactor can invoke the presenter to present data.
 }
 
-public protocol AddPaymentMethodListener: AnyObject { //리블렛에 필요한 것들을 public으로 이 리블렛을 사용하는 모듈들에게 노출해야함
-  func addPaymentMethodDidTapClose()
-  func addPaymentMethodDidAddCard(paymentMethod: PaymentMethod) //🔥외부 속성
-}
+//public protocol AddPaymentMethodListener: AnyObject { //리블렛에 필요한 것들을 public으로 이 리블렛을 사용하는 모듈들에게 노출해야함
+//  func addPaymentMethodDidTapClose()
+//  func addPaymentMethodDidAddCard(paymentMethod: PaymentMethod) //🔥외부 속성
+//}
 
 protocol AddPaymentMethodInteractorDependency {
   var cardOnFileRepository: CardOnFileRepository { get } //🔥외부 속성

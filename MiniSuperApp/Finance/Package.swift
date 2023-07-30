@@ -12,6 +12,10 @@ let package = Package(
       targets: ["AddPaymentMethod"]),
     
       .library(
+        name: "AddPaymentMethodImp",
+        targets: ["AddPaymentMethodImp"]),
+    
+      .library(
         name: "Topup",
         targets: ["Topup"]),
     
@@ -42,6 +46,16 @@ let package = Package(
       name: "AddPaymentMethod",
       dependencies: [
         "ModernRIBs",
+        "FinanceEntity",
+        .product(name: "RIBsUtil", package: "Platform")
+      ]
+    ),
+    
+    .target(
+      name: "AddPaymentMethodImp",
+      dependencies: [
+        "ModernRIBs",
+        "AddPaymentMethod",
         "FinanceEntity", //이 패키지 내에서 해당 라이브러리를 사용해야 하므로 디펜던시에 추가해준다
         "FinanceRepository",
         .product(name: "RIBsUtil", package: "Platform"),//🔥로컬 라이브러리 의존🔥
