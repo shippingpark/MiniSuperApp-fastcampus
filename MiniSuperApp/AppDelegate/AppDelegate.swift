@@ -3,7 +3,7 @@ import ModernRIBs
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
-  
+ 
   var window: UIWindow?
   
   private var launchRouter: LaunchRouting?
